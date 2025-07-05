@@ -19,6 +19,7 @@ Codette lets you work *with* your AI assistant instead of constantly fighting bo
 
 ## 🧱 Project Structure
 
+```
 codette/
 ├── codette.md # (Planned) Primary declaration file for site design
 ├── templates/ # Reference HTML/CSS/JS files for AI assistants
@@ -28,3 +29,4 @@ codette/
 ├── themes/ # Color palettes, font pairings, and style systems
 ├── utils/ # Optional build tools, linters, formatters
 └── README.md
+```

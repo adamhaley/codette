@@ -1,32 +1,62 @@
 # Codette
 
-**Codette** is a declarative web design system and template library that empowers creative developers to define websites using structured markdown and minimal boilerplate. Designed for AI code assistants, Codette translates human-friendly design intent into clean, responsive HTML/CSS/JS code.
+Codette is a lightweight static site generator for agentic website workflows. It is intentionally small: plain HTML, CSS, and a little JavaScript only when a pattern actually needs it.
 
----
+The core idea is simple:
 
-## ✨ What is Codette?
+- `sites/` holds declarative site specs.
+- `patterns/` holds reusable frontend layout patterns.
+- `themes/` holds design tokens and visual systems.
+- `generator/` compiles a site spec into static output.
 
-Codette is a developer-centric tool for rapidly prototyping and generating elegant brochure-style websites. Think of it as a **design prompt language** paired with a curated **starter codebase** — an intersection of:
+This repo is optimized for low tech debt and high leverage. The goal is not to become a framework. The goal is to make brochure-style and editorial marketing sites easy to generate, evolve, and reuse.
 
-- ✍️ Markdown-like declarations
-- 🧠 AI-assisted code generation (Claude, Gemini CLI, Cursor, etc.)
-- 🧩 Reusable, aesthetic components
-- 📐 Best practices in responsive HTML/CSS (no frameworks required)
+## Principles
 
-Codette lets you work *with* your AI assistant instead of constantly fighting boilerplate. One file defines your intent — layout, palette, components, tone — and Codette brings it to life.
+- No heavy frontend framework
+- Static output first
+- Patterns over one-off pages
+- Small, deterministic generator
+- Accessibility and responsive behavior built into each pattern
 
----
+## Current Shape
 
-## 🧱 Project Structure
-
-```
+```text
 codette/
-├── codette.md # (Planned) Primary declaration file for site design
-├── templates/ # Reference HTML/CSS/JS files for AI assistants
-│ ├── layout/
-│ ├── components/
-│ └── examples/
-├── themes/ # Color palettes, font pairings, and style systems
-├── utils/ # Optional build tools, linters, formatters
+├── generator/          # Minimal compiler from spec to static site
+├── patterns/           # Pattern contracts and renderers
+├── sites/              # Site definitions
+├── themes/             # Theme tokens and shared CSS
+├── output/             # Generated sites
+├── codette.md          # Legacy design-spec experiment kept for reference
 └── README.md
 ```
+
+## Getting Started
+
+Generate the example site:
+
+```bash
+npm run build
+```
+
+The generated output lands in `output/<site-slug>/`.
+
+## Authoring Model
+
+Each site spec defines:
+
+- site metadata
+- theme selection
+- navigation
+- footer content
+- a sequence of pattern sections
+
+Each pattern owns its rendering and its input contract. The generator stays boring on purpose.
+
+## Near-Term Direction
+
+- grow the pattern library slowly
+- add more themes without coupling them to content
+- keep specs easy for agents to author and edit
+- preserve clean static HTML output

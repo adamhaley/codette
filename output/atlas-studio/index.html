@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Atlas Studio</title>
+    <meta name="description" content="Design systems and digital experiences for ambitious small teams." />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="site-brand" href="/">Atlas Studio</a>
+          <nav class="site-nav" aria-label="Primary">
+            <a href="#work">Work</a><a href="#approach">Approach</a><a href="#contact">Contact</a>
+          </nav>
+        </div>
+      </header>
+      <main>
+        <section class="section hero-section" id="top">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Design Systems for Focused Teams</p>
+          <h1 class="display-title">Frontend structure that stays elegant as the site grows.</h1>
+          <p class="lede">Atlas Studio helps small teams ship editorial marketing sites with stronger hierarchy, cleaner systems, and fewer redesign spirals. The output is static, fast, and easy to extend.</p>
+          <div class="button-row"><a class="button button-primary" href="#contact">Start a Project</a><a class="button button-secondary" href="#approach">See the Approach</a></div>
+        </div>
+        <aside class="surface-card hero-panel">
+          <p class="hero-panel-kicker">System Notes</p>
+          <p class="hero-panel-title">Codette patterns are built to stay reusable.</p>
+          <ul class="hero-panel-list"><li>Content-first section composition</li><li>Theme tokens separated from layout</li><li>Plain HTML and CSS with tiny JS only when needed</li></ul>
+        </aside>
+      </div>
+    </section>
+<section class="section" id="work">
+      <div class="container">
+        <p class="eyebrow">Pattern Library</p>
+        <div class="section-heading">
+          <h2 class="section-title">A slow-growing collection of layouts with clear input contracts.</h2>
+          <p class="section-copy">The point is not to stockpile components. The point is to keep a short list of sections that solve real brochure-site problems well.</p>
+        </div>
+        <div class="feature-grid"><article class="surface-card feature-card">
+          <p class="feature-index">01</p>
+          <h3>Hero Systems</h3>
+          <p>Headline-led intros with supporting proof, action clusters, and optional side panels.</p>
+        </article><article class="surface-card feature-card">
+          <p class="feature-index">02</p>
+          <h3>Editorial Grids</h3>
+          <p>Feature groupings, asymmetric content blocks, and rhythm that survives real content.</p>
+        </article><article class="surface-card feature-card">
+          <p class="feature-index">03</p>
+          <h3>Conversion Bands</h3>
+          <p>Clear CTA sections that feel deliberate instead of bolted onto the page.</p>
+        </article></div>
+      </div>
+    </section>
+<section class="section" id="approach">
+      <div class="container split-grid">
+        <div>
+          <p class="eyebrow">Approach</p>
+          <h2 class="section-title">Keep the generator boring. Put the sophistication in the patterns.</h2>
+        </div>
+        <div class="split-body">
+          <p class="section-copy">The generator should mostly validate, render, and write files. That keeps the architecture stable while the pattern library grows through actual usage.</p>
+          <ul class="bullet-list"><li>Each section pattern owns its markup and responsive behavior.</li><li>Themes define tokens, not content structure.</li><li>Site specs stay shallow enough for agents to edit confidently.</li></ul>
+        </div>
+      </div>
+    </section>
+<section class="section">
+      <div class="container">
+        <blockquote class="surface-card quote-band">
+          <p class="quote-text">Small systems age better when they resist abstraction until reuse is obvious.</p>
+          <footer class="quote-attribution">Codette design principle</footer>
+        </blockquote>
+      </div>
+    </section>
+<section class="section" id="contact">
+      <div class="container">
+        <div class="surface-card cta-band">
+          <div>
+            <p class="eyebrow">Contact</p>
+            <h2 class="section-title">Use this repo as the seed for repeatable static website generation.</h2>
+            <p class="section-copy">The baseline is in place: site spec, patterns, theme, and static build output. Next, the pattern library can grow against real reference sites.</p>
+          </div>
+          <div class="button-row"><a class="button button-primary" href="#work">Add More Patterns</a><a class="button button-secondary" href="./site.json">Review the Spec</a></div>
+        </div>
+      </div>
+    </section>
+      </main>
+      <footer class="site-footer">
+        <div class="container footer-inner">
+          <div>
+            <p class="footer-brand">Atlas Studio</p>
+            <p class="footer-copy">A lightweight static site system built for agentic frontend workflows.</p>
+          </div>
+          <div class="footer-links">
+            <a href="https://github.com/">GitHub</a><a href="mailto:hello@example.com">Email</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+:root {
+  --font-body: "Instrument Sans", "Avenir Next", Avenir, "Segoe UI", sans-serif;
+  --font-heading: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --color-page-top: #f7f2e8;
+  --color-page-bottom: #efe7db;
+  --color-surface: #fffdf8;
+  --color-text: #1d1a17;
+  --color-muted: #635b53;
+  --color-accent: #b85c38;
+  --border-color: rgba(29, 26, 23, 0.08);
+  --border-color-strong: rgba(29, 26, 23, 0.18);
+}

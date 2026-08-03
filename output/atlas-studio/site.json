@@ -1,0 +1,126 @@
+{
+  "slug": "atlas-studio",
+  "title": "Atlas Studio",
+  "description": "Design systems and digital experiences for ambitious small teams.",
+  "brand": "Atlas Studio",
+  "theme": "editorial",
+  "navigation": {
+    "links": [
+      {
+        "label": "Work",
+        "href": "#work"
+      },
+      {
+        "label": "Approach",
+        "href": "#approach"
+      },
+      {
+        "label": "Contact",
+        "href": "#contact"
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "top",
+      "pattern": "hero",
+      "eyebrow": "Design Systems for Focused Teams",
+      "title": "Frontend structure that stays elegant as the site grows.",
+      "copy": "Atlas Studio helps small teams ship editorial marketing sites with stronger hierarchy, cleaner systems, and fewer redesign spirals. The output is static, fast, and easy to extend.",
+      "actions": [
+        {
+          "label": "Start a Project",
+          "href": "#contact",
+          "variant": "primary"
+        },
+        {
+          "label": "See the Approach",
+          "href": "#approach",
+          "variant": "secondary"
+        }
+      ],
+      "panel": {
+        "kicker": "System Notes",
+        "title": "Codette patterns are built to stay reusable.",
+        "items": [
+          "Content-first section composition",
+          "Theme tokens separated from layout",
+          "Plain HTML and CSS with tiny JS only when needed"
+        ]
+      }
+    },
+    {
+      "id": "work",
+      "pattern": "featureGrid",
+      "eyebrow": "Pattern Library",
+      "title": "A slow-growing collection of layouts with clear input contracts.",
+      "copy": "The point is not to stockpile components. The point is to keep a short list of sections that solve real brochure-site problems well.",
+      "items": [
+        {
+          "kicker": "01",
+          "title": "Hero Systems",
+          "copy": "Headline-led intros with supporting proof, action clusters, and optional side panels."
+        },
+        {
+          "kicker": "02",
+          "title": "Editorial Grids",
+          "copy": "Feature groupings, asymmetric content blocks, and rhythm that survives real content."
+        },
+        {
+          "kicker": "03",
+          "title": "Conversion Bands",
+          "copy": "Clear CTA sections that feel deliberate instead of bolted onto the page."
+        }
+      ]
+    },
+    {
+      "id": "approach",
+      "pattern": "splitContent",
+      "eyebrow": "Approach",
+      "title": "Keep the generator boring. Put the sophistication in the patterns.",
+      "copy": "The generator should mostly validate, render, and write files. That keeps the architecture stable while the pattern library grows through actual usage.",
+      "points": [
+        "Each section pattern owns its markup and responsive behavior.",
+        "Themes define tokens, not content structure.",
+        "Site specs stay shallow enough for agents to edit confidently."
+      ]
+    },
+    {
+      "pattern": "quoteBand",
+      "quote": "Small systems age better when they resist abstraction until reuse is obvious.",
+      "attribution": "Codette design principle"
+    },
+    {
+      "id": "contact",
+      "pattern": "cta",
+      "eyebrow": "Contact",
+      "title": "Use this repo as the seed for repeatable static website generation.",
+      "copy": "The baseline is in place: site spec, patterns, theme, and static build output. Next, the pattern library can grow against real reference sites.",
+      "actions": [
+        {
+          "label": "Add More Patterns",
+          "href": "#work",
+          "variant": "primary"
+        },
+        {
+          "label": "Review the Spec",
+          "href": "./site.json",
+          "variant": "secondary"
+        }
+      ]
+    }
+  ],
+  "footer": {
+    "blurb": "A lightweight static site system built for agentic frontend workflows.",
+    "links": [
+      {
+        "label": "GitHub",
+        "href": "https://github.com/"
+      },
+      {
+        "label": "Email",
+        "href": "mailto:hello@example.com"
+      }
+    ]
+  }
+}

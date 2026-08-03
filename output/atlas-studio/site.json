@@ -141,6 +141,7 @@
       "eyebrow": "Gallery",
       "title": "A Codette-native carousel for image-led editorial storytelling.",
       "copy": "This replaces the old Bootstrap dependency with a smaller reusable pattern. It supports captions, controls, indicators, and optional autoplay.",
+      "transition": "fade",
       "autoplay": true,
       "interval": 4200,
       "slides": [

@@ -173,6 +173,7 @@ export const patterns = {
     const slides = section.slides ?? [];
     const showIndicators = section.indicators !== false;
     const showControls = section.controls !== false;
+    const transition = section.transition ?? "fade";
 
     return `<section class="section"${sectionAttrs(section)}>
       <div class="container">
@@ -183,7 +184,7 @@ export const patterns = {
           </div>
           <p class="section-copy">${escapeHtml(section.copy ?? "")}</p>
         </div>
-        <div class="carousel-shell surface-card" data-carousel data-autoplay="${section.autoplay ? "true" : "false"}" data-interval="${escapeHtml(section.interval ?? 5000)}">
+        <div class="carousel-shell surface-card" data-carousel data-transition="${escapeHtml(transition)}" data-autoplay="${section.autoplay ? "true" : "false"}" data-interval="${escapeHtml(section.interval ?? 5000)}">
           <div class="carousel-track" aria-live="polite">
             ${slides.map((slide, index) => renderCarouselSlide(slide, index)).join("")}
           </div>
@@ -587,6 +588,25 @@ export const patternStyles = `
 
 .carousel-slide.is-active {
   display: grid;
+}
+
+.carousel-shell[data-transition="fade"] .carousel-track {
+  display: grid;
+}
+
+.carousel-shell[data-transition="fade"] .carousel-slide {
+  display: grid;
+  grid-area: 1 / 1;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 320ms ease, visibility 320ms ease;
+}
+
+.carousel-shell[data-transition="fade"] .carousel-slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
 .carousel-media {

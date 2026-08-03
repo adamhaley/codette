@@ -11,6 +11,10 @@
         "href": "#work"
       },
       {
+        "label": "Journal",
+        "href": "#journal"
+      },
+      {
         "label": "Approach",
         "href": "#approach"
       },
@@ -19,6 +23,14 @@
         "href": "#contact"
       }
     ]
+  },
+  "utilities": {
+    "backToTop": {
+      "enabled": true,
+      "iconVariant": "arrow",
+      "threshold": 120,
+      "ariaLabel": "Scroll back to top"
+    }
   },
   "sections": [
     {
@@ -74,6 +86,57 @@
       ]
     },
     {
+      "id": "journal",
+      "pattern": "articlePreviewList",
+      "eyebrow": "Editorial Feed",
+      "title": "Structured preview rows for articles, notes, or featured writing.",
+      "copy": "This pattern comes from the content-led rhythm in Amplified Expansion Coaching and can also support an editorial magazine front page.",
+      "items": [
+        {
+          "kicker": "Latest",
+          "title": "Design systems feel smaller when the section grammar is stable.",
+          "copy": "A preview row works well when a site needs to surface current writing without collapsing into a generic blog card grid.",
+          "linkLabel": "Read the note",
+          "href": "#contact",
+          "media": {
+            "label": "Article Preview"
+          }
+        },
+        {
+          "kicker": "Featured",
+          "title": "Editorial layouts need stronger rhythm than generic component stacks.",
+          "copy": "Alternating emphasis, disciplined typography, and image-aware spacing matter more than sheer component count.",
+          "linkLabel": "View the pattern",
+          "href": "#work",
+          "media": {
+            "label": "Editorial Layout"
+          }
+        }
+      ]
+    },
+    {
+      "pattern": "spotlight",
+      "eyebrow": "Reference Pattern",
+      "title": "Image-plus-copy split sections translate cleanly from both source sites.",
+      "copy": "One side carries the visual atmosphere, the other carries persuasion, proof, and the next action. That makes it useful for about blocks, event promos, or press features.",
+      "points": [
+        "Supports plain content pages and marketing homepages.",
+        "Can reverse media placement without changing content structure.",
+        "Stays compatible with real images or placeholder media blocks."
+      ],
+      "actions": [
+        {
+          "label": "Use as About Pattern",
+          "href": "#approach",
+          "variant": "secondary"
+        }
+      ],
+      "mediaPosition": "left",
+      "media": {
+        "label": "Portrait or Feature Image"
+      }
+    },
+    {
       "id": "approach",
       "pattern": "splitContent",
       "eyebrow": "Approach",
@@ -91,21 +154,77 @@
       "attribution": "Codette design principle"
     },
     {
-      "id": "contact",
-      "pattern": "cta",
-      "eyebrow": "Contact",
-      "title": "Use this repo as the seed for repeatable static website generation.",
-      "copy": "The baseline is in place: site spec, patterns, theme, and static build output. Next, the pattern library can grow against real reference sites.",
-      "actions": [
+      "pattern": "promoPair",
+      "eyebrow": "Action Rows",
+      "title": "Two-up promotional blocks cover events, press, products, or secondary offers.",
+      "copy": "This is the more reusable abstraction behind the alternating promo rows in Amplified Expansion Coaching.",
+      "items": [
         {
-          "label": "Add More Patterns",
-          "href": "#work",
-          "variant": "primary"
+          "eyebrow": "Events",
+          "title": "Event or workshop feature",
+          "copy": "Use this for a current event stream, gathering calendar, or time-sensitive offer that needs visual emphasis.",
+          "actions": [
+            {
+              "label": "View Calendar",
+              "href": "#contact",
+              "variant": "primary"
+            }
+          ],
+          "media": {
+            "label": "Event Image"
+          }
         },
         {
-          "label": "Review the Spec",
-          "href": "./site.json",
-          "variant": "secondary"
+          "eyebrow": "Press",
+          "title": "Press or coverage feature",
+          "copy": "Use this for interviews, podcasts, media mentions, or partnership highlights without building a separate template.",
+          "actions": [
+            {
+              "label": "Browse Coverage",
+              "href": "#journal",
+              "variant": "secondary"
+            }
+          ],
+          "media": {
+            "label": "Press Image"
+          }
+        }
+      ]
+    },
+    {
+      "pattern": "signupBand",
+      "eyebrow": "Network",
+      "title": "Signup bands should feel like a section, not an afterthought.",
+      "copy": "A useful baseline for newsletters, early access, communities, or lightweight lead capture.",
+      "buttonLabel": "Join the List",
+      "placeholder": "Enter your email",
+      "formAction": "#"
+    },
+    {
+      "id": "contact",
+      "pattern": "contactCards",
+      "eyebrow": "Contact",
+      "title": "Contact blocks can stay crisp and composable.",
+      "copy": "This pattern turns the contact card cluster from Amplified Expansion Coaching into a reusable section contract.",
+      "items": [
+        {
+          "label": "Email",
+          "value": "hello@atlasstudio.example",
+          "href": "mailto:hello@atlasstudio.example"
+        },
+        {
+          "label": "Phone",
+          "value": "(555) 014-2388",
+          "href": "tel:+15550142388"
+        },
+        {
+          "label": "Studio",
+          "value": "Los Angeles, California"
+        },
+        {
+          "label": "Spec",
+          "value": "Review the site spec",
+          "href": "./site.json"
         }
       ]
     }

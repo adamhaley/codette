@@ -23,6 +23,7 @@ This repo is optimized for low tech debt and high leverage. The goal is not to b
 
 ```text
 codette/
+├── docs/               # Pattern notes and system documentation
 ├── generator/          # Minimal compiler from spec to static site
 ├── patterns/           # Pattern contracts and renderers
 ├── sites/              # Site definitions
@@ -53,6 +54,8 @@ Each site spec defines:
 - a sequence of pattern sections
 
 Each pattern owns its rendering and its input contract. The generator stays boring on purpose.
+
+The initial inventory is documented in [docs/pattern-inventory.md](/opt/homebrew/var/www/codette/docs/pattern-inventory.md).
 
 ## Near-Term Direction
 

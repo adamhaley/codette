@@ -1,7 +1,14 @@
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { patterns, patternStyles } from "../patterns/index.mjs";
+import {
+  patternStyles,
+  patterns,
+  renderUtilities,
+  utilityScripts,
+  utilityStyles,
+  validateUtilities
+} from "../patterns/index.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, "..");
@@ -22,11 +29,15 @@ async function main() {
   await rm(siteOutputDir, { recursive: true, force: true });
   await mkdir(siteOutputDir, { recursive: true });
 
-  const css = [baseStyles, themeCss, patternStyles].join("\n\n");
+  const css = [baseStyles, themeCss, patternStyles, utilityStyles].join("\n\n");
   const html = renderDocument(site);
+  const script = renderScripts(site);
 
   await writeFile(path.join(siteOutputDir, "styles.css"), css);
   await writeFile(path.join(siteOutputDir, "index.html"), html);
+  if (script) {
+    await writeFile(path.join(siteOutputDir, "scripts.js"), script);
+  }
   await writeFile(
     path.join(siteOutputDir, "site.json"),
     `${JSON.stringify(site, null, 2)}\n`
@@ -49,6 +60,8 @@ function validateSite(site) {
       throw new Error(`Unknown pattern: ${section.pattern}`);
     }
   }
+
+  validateUtilities(site.utilities ?? {});
 }
 
 function renderDocument(site) {
@@ -66,6 +79,9 @@ function renderDocument(site) {
         `<a href="${escapeHtml(link.href)}">${escapeHtml(link.label)}</a>`
     )
     .join("");
+
+  const utilities = renderUtilities(site.utilities ?? {});
+  const hasScripts = Boolean(renderScripts(site));
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -100,9 +116,24 @@ function renderDocument(site) {
           </div>
         </div>
       </footer>
+      ${utilities}
     </div>
+    ${hasScripts ? '<script src="./scripts.js"></script>' : ""}
   </body>
 </html>`;
+}
+
+function renderScripts(site) {
+  const scripts = [];
+
+  for (const [name, config] of Object.entries(site.utilities ?? {})) {
+    const renderer = utilityScripts[name];
+    if (renderer && config?.enabled !== false) {
+      scripts.push(renderer(config));
+    }
+  }
+
+  return scripts.join("\n\n").trim();
 }
 
 function escapeHtml(value) {

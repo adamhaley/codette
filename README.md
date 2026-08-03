@@ -56,6 +56,7 @@ Each site spec defines:
 Each pattern owns its rendering and its input contract. The generator stays boring on purpose.
 
 The initial inventory is documented in [docs/pattern-inventory.md](/opt/homebrew/var/www/codette/docs/pattern-inventory.md).
+The guiding philosophy is documented in [docs/design-principles.md](/opt/homebrew/var/www/codette/docs/design-principles.md).
 
 ## Near-Term Direction
 

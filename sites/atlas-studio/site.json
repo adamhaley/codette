@@ -107,6 +107,34 @@
       "media": { "label": "Portrait or Feature Image" }
     },
     {
+      "pattern": "carouselGallery",
+      "eyebrow": "Gallery",
+      "title": "A Codette-native carousel for image-led editorial storytelling.",
+      "copy": "This replaces the old Bootstrap dependency with a smaller reusable pattern. It supports captions, controls, indicators, and optional autoplay.",
+      "autoplay": true,
+      "interval": 4200,
+      "slides": [
+        {
+          "kicker": "Slide 01",
+          "title": "Hero image sequence or magazine spread",
+          "copy": "Use this for a short image story, featured campaign sequence, or homepage visual rhythm.",
+          "media": { "label": "Gallery Image One" }
+        },
+        {
+          "kicker": "Slide 02",
+          "title": "Optional captions keep the gallery content-aware",
+          "copy": "A useful middle ground between a decorative slideshow and a full editorial section.",
+          "media": { "label": "Gallery Image Two" }
+        },
+        {
+          "kicker": "Slide 03",
+          "title": "Framework-free and spec-driven",
+          "copy": "The behavior is lightweight enough to stay native to Codette instead of importing a UI framework for one pattern.",
+          "media": { "label": "Gallery Image Three" }
+        }
+      ]
+    },
+    {
       "id": "approach",
       "pattern": "splitContent",
       "eyebrow": "Approach",

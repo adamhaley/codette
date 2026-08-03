@@ -2,6 +2,7 @@ import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
+  collectPatternScripts,
   patternStyles,
   patterns,
   renderUtilities,
@@ -125,6 +126,11 @@ function renderDocument(site) {
 
 function renderScripts(site) {
   const scripts = [];
+
+  const patternScript = collectPatternScripts(site.sections ?? []);
+  if (patternScript) {
+    scripts.push(patternScript);
+  }
 
   for (const [name, config] of Object.entries(site.utilities ?? {})) {
     const renderer = utilityScripts[name];

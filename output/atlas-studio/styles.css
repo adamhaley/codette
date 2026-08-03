@@ -385,6 +385,98 @@ a {
   gap: 1.25rem;
 }
 
+.carousel-shell {
+  position: relative;
+  overflow: hidden;
+  padding: 1.5rem;
+}
+
+.carousel-track {
+  position: relative;
+  min-height: 28rem;
+}
+
+.carousel-slide {
+  display: none;
+  gap: 1rem;
+}
+
+.carousel-slide.is-active {
+  display: grid;
+}
+
+.carousel-media {
+  min-height: 24rem;
+}
+
+.carousel-media img {
+  width: 100%;
+  min-height: 24rem;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+}
+
+.carousel-caption {
+  display: grid;
+  gap: 0.75rem;
+  max-width: 44rem;
+}
+
+.carousel-caption h3 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+}
+
+.carousel-caption p {
+  margin: 0;
+  color: var(--color-muted);
+  line-height: 1.7;
+}
+
+.carousel-controls {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  gap: 0.6rem;
+}
+
+.carousel-control,
+.carousel-indicator {
+  border: 0;
+  cursor: pointer;
+}
+
+.carousel-control {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-text) 88%, transparent);
+  color: var(--color-surface);
+}
+
+.carousel-control:hover {
+  color: var(--color-accent);
+}
+
+.carousel-indicators {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.carousel-indicator {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-text) 18%, transparent);
+}
+
+.carousel-indicator.is-active {
+  background: var(--color-accent);
+}
+
 .promo-card {
   overflow: hidden;
 }
@@ -495,6 +587,15 @@ a {
   .preview-row,
   .promo-card {
     grid-template-columns: 1fr;
+  }
+
+  .carousel-track {
+    min-height: auto;
+  }
+
+  .carousel-controls {
+    position: static;
+    justify-content: flex-end;
   }
 
   .promo-media {

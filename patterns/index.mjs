@@ -42,6 +42,21 @@ function sectionAttrs(section) {
   return section.id ? ` id="${escapeHtml(section.id)}"` : "";
 }
 
+function renderCarouselSlide(slide, index) {
+  const caption = slide.title || slide.copy
+    ? `<figcaption class="carousel-caption">
+        ${slide.kicker ? `<p class="feature-index">${escapeHtml(slide.kicker)}</p>` : ""}
+        ${slide.title ? `<h3>${escapeHtml(slide.title)}</h3>` : ""}
+        ${slide.copy ? `<p>${escapeHtml(slide.copy)}</p>` : ""}
+      </figcaption>`
+    : "";
+
+  return `<figure class="carousel-slide${index === 0 ? " is-active" : ""}" data-slide-index="${index}" aria-hidden="${index === 0 ? "false" : "true"}">
+    ${renderMedia(slide.media, "carousel-media")}
+    ${caption}
+  </figure>`;
+}
+
 export const patterns = {
   hero(section) {
     return `<section class="section hero-section"${sectionAttrs(section)}>
@@ -154,6 +169,52 @@ export const patterns = {
       </div>
     </section>`;
   },
+  carouselGallery(section) {
+    const slides = section.slides ?? [];
+    const showIndicators = section.indicators !== false;
+    const showControls = section.controls !== false;
+
+    return `<section class="section"${sectionAttrs(section)}>
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">${escapeHtml(section.eyebrow ?? "")}</p>
+            <h2 class="section-title">${escapeHtml(section.title)}</h2>
+          </div>
+          <p class="section-copy">${escapeHtml(section.copy ?? "")}</p>
+        </div>
+        <div class="carousel-shell surface-card" data-carousel data-autoplay="${section.autoplay ? "true" : "false"}" data-interval="${escapeHtml(section.interval ?? 5000)}">
+          <div class="carousel-track" aria-live="polite">
+            ${slides.map((slide, index) => renderCarouselSlide(slide, index)).join("")}
+          </div>
+          ${
+            showControls
+              ? `<div class="carousel-controls">
+            <button class="carousel-control" type="button" data-carousel-prev aria-label="Previous slide">
+              <span aria-hidden="true">&larr;</span>
+            </button>
+            <button class="carousel-control" type="button" data-carousel-next aria-label="Next slide">
+              <span aria-hidden="true">&rarr;</span>
+            </button>
+          </div>`
+              : ""
+          }
+          ${
+            showIndicators
+              ? `<div class="carousel-indicators" role="tablist" aria-label="Slide selection">
+            ${slides
+              .map(
+                (_, index) =>
+                  `<button class="carousel-indicator${index === 0 ? " is-active" : ""}" type="button" data-carousel-indicator="${index}" aria-label="Go to slide ${index + 1}" aria-pressed="${index === 0 ? "true" : "false"}"></button>`
+              )
+              .join("")}
+          </div>`
+              : ""
+          }
+        </div>
+      </div>
+    </section>`;
+  },
   splitContent(section) {
     return `<section class="section"${sectionAttrs(section)}>
       <div class="container split-grid">
@@ -261,6 +322,16 @@ export function renderUtilities(utilities) {
       return renderer && config?.enabled !== false ? renderer(config) : "";
     })
     .join("\n");
+}
+
+export function collectPatternScripts(sections) {
+  const scripts = [];
+
+  if (sections.some((section) => section.pattern === "carouselGallery")) {
+    scripts.push(carouselScript);
+  }
+
+  return scripts.join("\n\n").trim();
 }
 
 export const utilityRegistry = {
@@ -498,6 +569,98 @@ export const patternStyles = `
   gap: 1.25rem;
 }
 
+.carousel-shell {
+  position: relative;
+  overflow: hidden;
+  padding: 1.5rem;
+}
+
+.carousel-track {
+  position: relative;
+  min-height: 28rem;
+}
+
+.carousel-slide {
+  display: none;
+  gap: 1rem;
+}
+
+.carousel-slide.is-active {
+  display: grid;
+}
+
+.carousel-media {
+  min-height: 24rem;
+}
+
+.carousel-media img {
+  width: 100%;
+  min-height: 24rem;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+}
+
+.carousel-caption {
+  display: grid;
+  gap: 0.75rem;
+  max-width: 44rem;
+}
+
+.carousel-caption h3 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+}
+
+.carousel-caption p {
+  margin: 0;
+  color: var(--color-muted);
+  line-height: 1.7;
+}
+
+.carousel-controls {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  gap: 0.6rem;
+}
+
+.carousel-control,
+.carousel-indicator {
+  border: 0;
+  cursor: pointer;
+}
+
+.carousel-control {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-text) 88%, transparent);
+  color: var(--color-surface);
+}
+
+.carousel-control:hover {
+  color: var(--color-accent);
+}
+
+.carousel-indicators {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.carousel-indicator {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-text) 18%, transparent);
+}
+
+.carousel-indicator.is-active {
+  background: var(--color-accent);
+}
+
 .promo-card {
   overflow: hidden;
 }
@@ -610,6 +773,15 @@ export const patternStyles = `
     grid-template-columns: 1fr;
   }
 
+  .carousel-track {
+    min-height: auto;
+  }
+
+  .carousel-controls {
+    position: static;
+    justify-content: flex-end;
+  }
+
   .promo-media {
     border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   }
@@ -668,3 +840,78 @@ export const utilityStyles = `
   fill: var(--color-accent);
 }
 `;
+
+const carouselScript = `(function () {
+  const carousels = document.querySelectorAll('[data-carousel]');
+  if (!carousels.length) return;
+
+  carousels.forEach(function (root) {
+    const slides = Array.from(root.querySelectorAll('.carousel-slide'));
+    if (!slides.length) return;
+    const indicators = Array.from(root.querySelectorAll('[data-carousel-indicator]'));
+    const nextButton = root.querySelector('[data-carousel-next]');
+    const prevButton = root.querySelector('[data-carousel-prev]');
+    const autoplay = root.dataset.autoplay === 'true';
+    const interval = Number(root.dataset.interval || 5000);
+    let activeIndex = 0;
+    let timerId = null;
+
+    function render(index) {
+      activeIndex = (index + slides.length) % slides.length;
+
+      slides.forEach(function (slide, slideIndex) {
+        const isActive = slideIndex === activeIndex;
+        slide.classList.toggle('is-active', isActive);
+        slide.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+      });
+
+      indicators.forEach(function (indicator, indicatorIndex) {
+        const isActive = indicatorIndex === activeIndex;
+        indicator.classList.toggle('is-active', isActive);
+        indicator.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
+    }
+
+    function stopAutoplay() {
+      if (timerId) {
+        window.clearInterval(timerId);
+        timerId = null;
+      }
+    }
+
+    function startAutoplay() {
+      if (!autoplay || slides.length < 2) return;
+      stopAutoplay();
+      timerId = window.setInterval(function () {
+        render(activeIndex + 1);
+      }, interval);
+    }
+
+    indicators.forEach(function (indicator) {
+      indicator.addEventListener('click', function () {
+        render(Number(indicator.dataset.carouselIndicator));
+        startAutoplay();
+      });
+    });
+
+    if (nextButton) {
+      nextButton.addEventListener('click', function () {
+        render(activeIndex + 1);
+        startAutoplay();
+      });
+    }
+
+    if (prevButton) {
+      prevButton.addEventListener('click', function () {
+        render(activeIndex - 1);
+        startAutoplay();
+      });
+    }
+
+    root.addEventListener('mouseenter', stopAutoplay);
+    root.addEventListener('mouseleave', startAutoplay);
+
+    render(0);
+    startAutoplay();
+  });
+})();`;

@@ -22,6 +22,9 @@ The goal is not to mirror those sites literally. The goal is to extract the reus
 - `promoPair`
   - two-up promotional feature blocks
   - good for events, press, products, or secondary offers
+- `carouselGallery`
+  - native image carousel with captions, controls, indicators, and optional autoplay
+  - extracted from the role the Monk Magazine carousel played, without Bootstrap
 - `splitContent`
   - editorial explanation section with title, copy, and bullets
 - `quoteBand`
@@ -45,7 +48,7 @@ The goal is not to mirror those sites literally. The goal is to extract the reus
 - `overlayNav`
   - inspired by Monk Magazine
 - `carouselGallery`
-  - for image-led editorial sequences
+  - implemented as a native Codette pattern
 - `issueGrid`
   - for magazine covers, products, or archive items
 - `expandableBand`

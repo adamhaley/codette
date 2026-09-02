@@ -58,6 +58,19 @@ function renderCarouselSlide(slide, index) {
 }
 
 export const patterns = {
+  gradientMasthead(section) {
+    return `<header class="gradient-masthead"${sectionAttrs(section)}>
+      <div class="container">
+        <p class="eyebrow">${escapeHtml(section.eyebrow ?? "")}</p>
+        <h1 class="display-title">${escapeHtml(section.title)}</h1>
+        <p class="masthead-subheading">${escapeHtml(section.subheading ?? "")}</p>
+        ${renderButtons(section.actions)}
+      </div>
+      <div class="masthead-circle masthead-circle-1"></div>
+      <div class="masthead-circle masthead-circle-2"></div>
+      <div class="masthead-circle masthead-circle-3"></div>
+    </header>`;
+  },
   hero(section) {
     return `<section class="section hero-section"${sectionAttrs(section)}>
       <div class="container hero-grid">
@@ -99,10 +112,11 @@ export const patterns = {
   },
   spotlight(section) {
     const mediaFirst = section.mediaPosition === "left";
+    const mediaClass = section.mediaShape === "circle" ? "spotlight-media spotlight-media-circle" : "spotlight-media";
 
     return `<section class="section"${sectionAttrs(section)}>
       <div class="container spotlight-grid ${mediaFirst ? "spotlight-media-left" : ""}">
-        ${renderMedia(section.media, "spotlight-media")}
+        ${renderMedia(section.media, mediaClass)}
         <div class="spotlight-copy">
           <p class="eyebrow">${escapeHtml(section.eyebrow)}</p>
           <h2 class="section-title">${escapeHtml(section.title)}</h2>
@@ -458,12 +472,20 @@ export const patternStyles = `
   grid-column: span 6;
 }
 
+.spotlight-media {
+  order: 2;
+}
+
+.spotlight-copy {
+  order: 1;
+}
+
 .spotlight-media-left .spotlight-media {
-  order: 0;
+  order: 1;
 }
 
 .spotlight-media-left .spotlight-copy {
-  order: 1;
+  order: 2;
 }
 
 .media-placeholder {
@@ -482,7 +504,7 @@ export const patternStyles = `
 .media-placeholder span {
   display: inline-block;
   padding: 0.55rem 0.8rem;
-  border-radius: 999px;
+  border-radius: 0;
   background: rgba(255, 255, 255, 0.72);
   color: var(--color-text);
   font-size: 0.78rem;
@@ -655,7 +677,7 @@ export const patternStyles = `
 .carousel-control {
   width: 2.75rem;
   height: 2.75rem;
-  border-radius: 999px;
+  border-radius: 50%;
   background: color-mix(in srgb, var(--color-text) 88%, transparent);
   color: var(--color-surface);
 }
@@ -732,7 +754,7 @@ export const patternStyles = `
   min-height: 3rem;
   padding: 0.85rem 1rem;
   border: var(--border-subtle);
-  border-radius: 999px;
+  border-radius: 0;
   background: rgba(255, 255, 255, 0.72);
   color: var(--color-text);
 }
@@ -771,7 +793,104 @@ export const patternStyles = `
   border: 0;
 }
 
+.gradient-masthead {
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  padding: calc(var(--section-space) * 1.5) 0 var(--section-space);
+  background: linear-gradient(0deg, var(--color-accent-2, var(--color-accent)) 0%, var(--color-accent) 100%);
+  color: #fff;
+}
+
+.gradient-masthead .container {
+  position: relative;
+  z-index: 1;
+}
+
+.gradient-masthead .eyebrow {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.gradient-masthead .display-title {
+  color: inherit;
+}
+
+.gradient-masthead .masthead-subheading {
+  margin: 0.5rem 0 2rem;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: clamp(1.4rem, 3.5vw, 2.5rem);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.gradient-masthead .button-row {
+  justify-content: center;
+}
+
+.gradient-masthead .button-primary {
+  background: #fff;
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.masthead-circle {
+  position: absolute;
+  z-index: 0;
+  border-radius: 50%;
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.04) 100%);
+}
+
+.masthead-circle-1 {
+  width: 70rem;
+  height: 70rem;
+  left: -30rem;
+  bottom: -42rem;
+}
+
+.masthead-circle-2 {
+  width: 38rem;
+  height: 38rem;
+  right: -14rem;
+  top: -18rem;
+}
+
+.masthead-circle-3 {
+  width: 18rem;
+  height: 18rem;
+  right: 8%;
+  bottom: -6rem;
+}
+
+.spotlight-media-circle {
+  width: min(100%, 26rem);
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+  border-radius: 50%;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.spotlight-media-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 @media (max-width: 960px) {
+  .masthead-circle-1 {
+    width: 40rem;
+    height: 40rem;
+    left: -18rem;
+    bottom: -24rem;
+  }
+
+  .masthead-circle-2,
+  .masthead-circle-3 {
+    display: none;
+  }
+
+
   .hero-copy,
   .hero-panel,
   .spotlight-media,
@@ -841,7 +960,7 @@ export const utilityStyles = `
   place-items: center;
   width: 100%;
   height: 100%;
-  border-radius: 999px;
+  border-radius: 50%;
   background: color-mix(in srgb, var(--color-text) 86%, transparent);
   box-shadow: var(--shadow-soft);
 }

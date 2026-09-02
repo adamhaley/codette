@@ -156,10 +156,10 @@ const baseStyles = `
   --container-width: 72rem;
   --gutter: clamp(1rem, 2vw, 1.5rem);
   --section-space: clamp(4rem, 8vw, 8rem);
-  --radius-sm: 0.75rem;
-  --radius-md: 1.5rem;
-  --radius-lg: 2rem;
-  --shadow-soft: 0 24px 60px rgba(15, 23, 42, 0.08);
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --shadow-soft: none;
   --border-subtle: 1px solid var(--border-color);
 }
 
@@ -297,8 +297,8 @@ a {
   justify-content: center;
   min-height: 3rem;
   padding: 0.8rem 1.25rem;
-  border-radius: 999px;
-  border: 1px solid transparent;
+  border-radius: 0;
+  border: 0;
   text-decoration: none;
   font-weight: 700;
   transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease;
@@ -314,7 +314,7 @@ a {
 }
 
 .button-secondary {
-  border-color: var(--border-color-strong);
+  background: var(--color-strong-surface);
   color: var(--color-text);
 }
 

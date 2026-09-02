@@ -735,8 +735,12 @@ export const patternStyles = `
   right: 1rem;
 }
 
-.codette-carousel-control:hover,
-.codette-carousel-control:focus {
+.codette-carousel-control:focus,
+.codette-carousel-control:active {
+  color: var(--color-surface);
+}
+
+.codette-carousel-control:hover {
   color: var(--color-accent);
 }
 

@@ -109,9 +109,11 @@
     {
       "pattern": "carouselGallery",
       "eyebrow": "Gallery",
-      "title": "A Codette-native carousel for image-led editorial storytelling.",
-      "copy": "This replaces the old Bootstrap dependency with a smaller reusable pattern. It supports captions, controls, indicators, and optional autoplay.",
-      "transition": "fade",
+      "title": "A Bootstrap-powered carousel with Codette-controlled styling.",
+      "copy": "This keeps Bootstrap's standard carousel behavior for swipe and navigation support while letting Codette control the visual treatment and layout.",
+      "transition": "slide",
+      "imageFit": "cover",
+      "mediaHeight": "clamp(20rem, 48vw, 32rem)",
       "autoplay": true,
       "interval": 4200,
       "slides": [

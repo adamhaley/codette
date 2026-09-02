@@ -42,19 +42,33 @@ function sectionAttrs(section) {
   return section.id ? ` id="${escapeHtml(section.id)}"` : "";
 }
 
+function styleAttr(styleMap = {}) {
+  const entries = Object.entries(styleMap).filter(([, value]) => value !== undefined && value !== null && value !== "");
+  if (!entries.length) {
+    return "";
+  }
+
+  const style = entries
+    .map(([name, value]) => `${name}: ${String(value).replaceAll('"', "&quot;")}`)
+    .join("; ");
+
+  return ` style="${style}"`;
+}
+
 function renderCarouselSlide(slide, index) {
-  const caption = slide.title || slide.copy
-    ? `<figcaption class="carousel-caption">
-        ${slide.kicker ? `<p class="feature-index">${escapeHtml(slide.kicker)}</p>` : ""}
-        ${slide.title ? `<h3>${escapeHtml(slide.title)}</h3>` : ""}
-        ${slide.copy ? `<p>${escapeHtml(slide.copy)}</p>` : ""}
-      </figcaption>`
+  const captionText = slide.copy || slide.title;
+  const caption = captionText
+    ? `<div class="codette-carousel-caption">
+        <p>${escapeHtml(captionText)}</p>
+      </div>`
     : "";
 
-  return `<figure class="carousel-slide${index === 0 ? " is-active" : ""}" data-slide-index="${index}" aria-hidden="${index === 0 ? "false" : "true"}">
-    ${renderMedia(slide.media, "carousel-media")}
-    ${caption}
-  </figure>`;
+  return `<div class="carousel-item${index === 0 ? " active" : ""}">
+    <figure class="carousel-slide">
+      ${renderMedia(slide.media, "carousel-media")}
+      ${caption}
+    </figure>
+  </div>`;
 }
 
 export const patterns = {
@@ -188,6 +202,16 @@ export const patterns = {
     const showIndicators = section.indicators !== false;
     const showControls = section.controls !== false;
     const transition = section.transition ?? "fade";
+    const imageFit = section.imageFit === "contain" ? "contain" : "cover";
+    const fallbackId = String(section.title ?? "carousel")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
+    const carouselId = `${section.id ?? fallbackId}-carousel`;
+    const shellStyle = styleAttr({
+      "--carousel-media-height": section.mediaHeight,
+      "--carousel-image-fit": imageFit
+    });
 
     return `<section class="section"${sectionAttrs(section)}>
       <div class="container">
@@ -198,29 +222,29 @@ export const patterns = {
           </div>
           <p class="section-copy">${escapeHtml(section.copy ?? "")}</p>
         </div>
-        <div class="carousel-shell surface-card" data-carousel data-transition="${escapeHtml(transition)}" data-autoplay="${section.autoplay ? "true" : "false"}" data-interval="${escapeHtml(section.interval ?? 5000)}">
-          <div class="carousel-track" aria-live="polite">
-            ${slides.map((slide, index) => renderCarouselSlide(slide, index)).join("")}
-          </div>
+        <div id="${escapeHtml(carouselId)}" class="carousel-shell surface-card carousel slide${transition === "fade" ? " carousel-fade" : ""}"${shellStyle} data-bs-touch="true" data-bs-ride="${section.autoplay ? "carousel" : "false"}" data-bs-interval="${escapeHtml(section.interval ?? 5000)}">
+          <div class="carousel-viewport">
+            <div class="carousel-inner carousel-track" aria-live="polite">
+              ${slides.map((slide, index) => renderCarouselSlide(slide, index)).join("")}
+            </div>
           ${
             showControls
-              ? `<div class="carousel-controls">
-            <button class="carousel-control" type="button" data-carousel-prev aria-label="Previous slide">
-              <span aria-hidden="true">&larr;</span>
-            </button>
-            <button class="carousel-control" type="button" data-carousel-next aria-label="Next slide">
-              <span aria-hidden="true">&rarr;</span>
-            </button>
-          </div>`
+              ? `<button class="carousel-control-prev codette-carousel-control" type="button" data-bs-target="#${escapeHtml(carouselId)}" data-bs-slide="prev" aria-label="Previous slide">
+            <span class="codette-carousel-control-icon" aria-hidden="true">&larr;</span>
+          </button>
+          <button class="carousel-control-next codette-carousel-control" type="button" data-bs-target="#${escapeHtml(carouselId)}" data-bs-slide="next" aria-label="Next slide">
+            <span class="codette-carousel-control-icon" aria-hidden="true">&rarr;</span>
+          </button>`
               : ""
           }
+          </div>
           ${
             showIndicators
-              ? `<div class="carousel-indicators" role="tablist" aria-label="Slide selection">
+              ? `<div class="carousel-indicators codette-carousel-indicators">
             ${slides
               .map(
                 (_, index) =>
-                  `<button class="carousel-indicator${index === 0 ? " is-active" : ""}" type="button" data-carousel-indicator="${index}" aria-label="Go to slide ${index + 1}" aria-pressed="${index === 0 ? "true" : "false"}"></button>`
+                  `<button class="carousel-indicator${index === 0 ? " active" : ""}" type="button" data-bs-target="#${escapeHtml(carouselId)}" data-bs-slide-to="${index}" aria-label="Go to slide ${index + 1}" ${index === 0 ? 'aria-current="true"' : ""}></button>`
               )
               .join("")}
           </div>`
@@ -340,13 +364,8 @@ export function renderUtilities(utilities) {
 }
 
 export function collectPatternScripts(sections) {
-  const scripts = [];
-
-  if (sections.some((section) => section.pattern === "carouselGallery")) {
-    scripts.push(carouselScript);
-  }
-
-  return scripts.join("\n\n").trim();
+  void sections;
+  return "";
 }
 
 export const utilityRegistry = {
@@ -593,112 +612,160 @@ export const patternStyles = `
 }
 
 .carousel-shell {
+  --carousel-media-height: clamp(18rem, 42vw, 26rem);
   position: relative;
   overflow: hidden;
-  padding: 1.5rem;
+  padding: 1.5rem 1.5rem 3.75rem;
+}
+
+.carousel-viewport {
+  position: relative;
 }
 
 .carousel-track {
   position: relative;
-  min-height: 28rem;
+  overflow: hidden;
 }
 
 .carousel-slide {
+  display: grid;
+  gap: 1.25rem;
+  margin: 0;
+}
+
+.carousel-item {
+  position: relative;
   display: none;
-  gap: 1rem;
+  float: left;
+  width: 100%;
+  margin-right: -100%;
+  backface-visibility: hidden;
+  transition: transform 0.6s ease-in-out;
 }
 
-.carousel-slide.is-active {
-  display: grid;
+.carousel-item.active,
+.carousel-item-next,
+.carousel-item-prev {
+  display: block;
 }
 
-.carousel-shell[data-transition="fade"] .carousel-track {
-  display: grid;
+.carousel-item-next:not(.carousel-item-start),
+.active.carousel-item-end {
+  transform: translateX(100%);
 }
 
-.carousel-shell[data-transition="fade"] .carousel-slide {
-  display: grid;
-  grid-area: 1 / 1;
+.carousel-item-prev:not(.carousel-item-end),
+.active.carousel-item-start {
+  transform: translateX(-100%);
+}
+
+.carousel-fade .carousel-item {
   opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: opacity 320ms ease, visibility 320ms ease;
+  transition-property: opacity;
+  transform: none;
 }
 
-.carousel-shell[data-transition="fade"] .carousel-slide.is-active {
+.carousel-fade .carousel-item.active,
+.carousel-fade .carousel-item-next.carousel-item-start,
+.carousel-fade .carousel-item-prev.carousel-item-end {
+  z-index: 1;
   opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
+}
+
+.carousel-fade .active.carousel-item-start,
+.carousel-fade .active.carousel-item-end {
+  z-index: 0;
+  opacity: 0;
 }
 
 .carousel-media {
-  min-height: 24rem;
+  margin: 0;
+  min-height: var(--carousel-media-height);
+  height: var(--carousel-media-height);
 }
 
-.carousel-media img {
+.carousel-media img,
+.carousel-media.media-placeholder {
   width: 100%;
-  min-height: 24rem;
-  object-fit: cover;
+  min-height: var(--carousel-media-height);
+  height: var(--carousel-media-height);
+  object-fit: var(--carousel-image-fit, cover);
   border-radius: var(--radius-md);
 }
 
-.carousel-caption {
-  display: grid;
-  gap: 0.75rem;
-  max-width: 44rem;
+.codette-carousel-caption {
+  max-width: 38rem;
+  min-height: 3.5rem;
+  margin: 0 auto;
+  text-align: center;
 }
 
-.carousel-caption h3 {
-  margin: 0;
-  font-family: var(--font-heading);
-  font-size: clamp(1.8rem, 3vw, 2.8rem);
-}
-
-.carousel-caption p {
+.codette-carousel-caption p {
   margin: 0;
   color: var(--color-muted);
   line-height: 1.7;
 }
 
-.carousel-controls {
-  position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  display: flex;
-  gap: 0.6rem;
-}
-
-.carousel-control,
-.carousel-indicator {
+.carousel-indicator,
+.codette-carousel-control {
   border: 0;
   cursor: pointer;
 }
 
-.carousel-control {
+.codette-carousel-control {
+  position: absolute;
+  top: calc(var(--carousel-media-height) / 2);
+  transform: translateY(-50%);
   width: 2.75rem;
   height: 2.75rem;
   border-radius: 50%;
   background: color-mix(in srgb, var(--color-text) 88%, transparent);
   color: var(--color-surface);
+  display: grid;
+  place-items: center;
+  z-index: 2;
+  opacity: 1;
 }
 
-.carousel-control:hover {
+.carousel-control-prev.codette-carousel-control {
+  left: 1rem;
+}
+
+.carousel-control-next.codette-carousel-control {
+  right: 1rem;
+}
+
+.codette-carousel-control:hover,
+.codette-carousel-control:focus {
   color: var(--color-accent);
 }
 
-.carousel-indicators {
+.codette-carousel-control-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.codette-carousel-indicators {
+  position: absolute;
+  left: 50%;
+  bottom: 1rem;
+  transform: translateX(-50%);
   display: flex;
-  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   gap: 0.5rem;
+  margin: 0;
 }
 
 .carousel-indicator {
-  width: 0.8rem;
+  width: 2rem;
   height: 0.8rem;
   border-radius: 999px;
   background: color-mix(in srgb, var(--color-text) 18%, transparent);
+  opacity: 1;
 }
 
+.carousel-indicator.active,
 .carousel-indicator.is-active {
   background: var(--color-accent);
 }
@@ -912,21 +979,16 @@ export const patternStyles = `
     grid-template-columns: 1fr;
   }
 
-  .carousel-track {
-    min-height: auto;
-  }
-
-  .carousel-controls {
-    position: static;
-    justify-content: flex-end;
-  }
-
   .promo-media {
     border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   }
 
   .promo-copy {
     padding: 0 1.5rem 1.5rem;
+  }
+
+  .codette-carousel-control {
+    top: calc(var(--carousel-media-height) / 2);
   }
 }
 `;

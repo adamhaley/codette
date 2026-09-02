@@ -83,6 +83,7 @@ function renderDocument(site) {
 
   const utilities = renderUtilities(site.utilities ?? {});
   const hasScripts = Boolean(renderScripts(site));
+  const needsBootstrapCarousel = usesBootstrapCarousel(site);
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -119,6 +120,7 @@ function renderDocument(site) {
       </footer>
       ${utilities}
     </div>
+    ${needsBootstrapCarousel ? '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>' : ""}
     ${hasScripts ? '<script src="./scripts.js"></script>' : ""}
   </body>
 </html>`;
@@ -140,6 +142,12 @@ function renderScripts(site) {
   }
 
   return scripts.join("\n\n").trim();
+}
+
+function usesBootstrapCarousel(site) {
+  return (site.sections ?? []).some(
+    (section) => section.pattern === "carouselGallery"
+  );
 }
 
 function escapeHtml(value) {

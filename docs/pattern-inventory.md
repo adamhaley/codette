@@ -44,6 +44,11 @@ The goal is not to mirror those sites literally. The goal is to extract the reus
   - compact contact information grid
 - `cta`
   - general-purpose conversion section
+- `hero`
+  - `title` supports an optional `accent` span (`.text-accent`, themeable) for a two-tone
+    headline, e.g. `title: "AH Media"`, `accent: ".ai"`
+  - `panel` (the side `aside` card) is optional — omit it for a single-column hero
+    (`.hero-grid-solo`) instead of a hero with an empty card
 
 ## Utility Patterns
 
@@ -51,6 +56,12 @@ The goal is not to mirror those sites literally. The goal is to extract the reus
   - floating scroll-triggered utility
   - shared concept across both reference sites
   - supports SVG icon variants like `arrow`, `triangle`, `chevron`, and `caret`
+- `chatWidget`
+  - floating reopen button + chat panel (messages list, input row, streaming NDJSON support)
+  - posts to `config.endpoint` (default `/api/chat.php`)
+  - auto-generates a `namespace` in `localStorage` on first load so it works standalone,
+    without depending on any upload/file step
+  - sourced from `ahmedia`'s chat widget
 
 ## Near-Term Additions
 

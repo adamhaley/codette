@@ -1,0 +1,33 @@
+:root {
+  --font-body: "Arial", "Helvetica Neue", Helvetica, sans-serif;
+  --font-heading: "Arial", "Helvetica Neue", Helvetica, sans-serif;
+  --color-page-top: #005e5e;
+  --color-page-bottom: #004a4a;
+  --color-surface: #006666;
+  --color-strong-surface: #007a7a;
+  --color-text: #ffffff;
+  --color-muted: rgba(255, 255, 255, 0.7);
+  --color-accent: #00ffff;
+  --color-accent-2: #00cccc;
+  --border-color: rgba(255, 255, 255, 0.15);
+  --border-color-strong: rgba(255, 255, 255, 0.3);
+  --neon-pink: #ff00ff;
+  --neon-purple: #bc13fe;
+  --glow-color: #00ffff;
+  --glow-strength: 15px;
+}
+
+body {
+  background: linear-gradient(180deg, var(--color-page-top), var(--color-page-bottom));
+}
+
+.display-title,
+.site-brand,
+.footer-brand {
+  color: #fff;
+  text-shadow: 0 0 10px var(--glow-color), 0 0 20px var(--glow-color), 0 0 40px var(--glow-color);
+}
+
+.text-accent {
+  text-shadow: inherit;
+}

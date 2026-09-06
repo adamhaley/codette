@@ -1,0 +1,29 @@
+{
+  "slug": "ahmedia",
+  "title": "AH Media.ai",
+  "description": "AH Media.ai",
+  "brand": "AH Media",
+  "theme": "ahmedia",
+  "navigation": {
+    "links": []
+  },
+  "utilities": {
+    "chatWidget": {
+      "enabled": true,
+      "endpoint": "/api/chat.php",
+      "ariaLabel": "Open chat"
+    }
+  },
+  "sections": [
+    {
+      "id": "top",
+      "pattern": "hero",
+      "title": "AH Media",
+      "accent": ".ai"
+    }
+  ],
+  "footer": {
+    "blurb": "",
+    "links": []
+  }
+}

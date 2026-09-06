@@ -22,9 +22,18 @@ The goal is not to mirror those sites literally. The goal is to extract the reus
 - `promoPair`
   - two-up promotional feature blocks
   - good for events, press, products, or secondary offers
+- `gallery`
+  - standardized entry point for image gallery sections
+  - set `layout: "carousel"` (default) for a sliding Bootstrap-backed carousel, or `layout: "thumbnails"` for a responsive thumbnail grid that opens a native `<dialog>` lightbox
+  - both layouts take the same `items` array (`{ kicker, title, copy, media }`), so switching layout is a one-line change
+  - dispatches internally to `carouselGallery` / `thumbnailGallery`; use those directly only if you need a layout-specific option not exposed on `gallery`
 - `carouselGallery`
-  - native image carousel with captions, controls, indicators, and optional autoplay
-  - extracted from the role the Monk Magazine carousel played, without Bootstrap
+  - sliding/fading Bootstrap-backed carousel with captions, controls, indicators, and optional autoplay
+  - prefer `gallery` with `layout: "carousel"` in new specs
+- `thumbnailGallery`
+  - responsive thumbnail grid; clicking a thumbnail opens a native `<dialog>` lightbox with prev/next and caption
+  - no external dependency — small vanilla JS, browser handles focus/backdrop/Escape
+  - prefer `gallery` with `layout: "thumbnails"` in new specs
 - `splitContent`
   - editorial explanation section with title, copy, and bullets
 - `quoteBand`
@@ -47,8 +56,6 @@ The goal is not to mirror those sites literally. The goal is to extract the reus
 
 - `overlayNav`
   - inspired by Monk Magazine
-- `carouselGallery`
-  - implemented as a native Codette pattern
 - `issueGrid`
   - for magazine covers, products, or archive items
 - `expandableBand`

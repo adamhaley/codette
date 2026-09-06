@@ -7,12 +7,16 @@ function escapeHtml(value) {
     .replaceAll("'", "&#39;");
 }
 
+function resolveAssetPath(src) {
+  return /^(https?:|data:|\/)/.test(src) ? src : `/${src}`;
+}
+
 function renderMedia(media = {}, className = "media-block") {
   const label = escapeHtml(media.label ?? media.alt ?? "Visual");
 
   if (media.src) {
     return `<figure class="${className}">
-      <img src="${escapeHtml(media.src)}" alt="${escapeHtml(media.alt ?? "")}" />
+      <img src="${escapeHtml(resolveAssetPath(media.src))}" alt="${escapeHtml(media.alt ?? "")}" />
     </figure>`;
   }
 
@@ -73,9 +77,14 @@ function renderCarouselSlide(slide, index) {
 
 export const patterns = {
   gradientMasthead(section) {
+    const eyebrowText = escapeHtml(section.eyebrow ?? "");
+    const eyebrow = section.eyebrowHref
+      ? `<a class="eyebrow masthead-eyebrow-link" href="${escapeHtml(section.eyebrowHref)}">${eyebrowText}</a>`
+      : `<p class="eyebrow">${eyebrowText}</p>`;
+
     return `<header class="gradient-masthead"${sectionAttrs(section)}>
       <div class="container">
-        <p class="eyebrow">${escapeHtml(section.eyebrow ?? "")}</p>
+        ${eyebrow}
         <h1 class="display-title">${escapeHtml(section.title)}</h1>
         <p class="masthead-subheading">${escapeHtml(section.subheading ?? "")}</p>
         ${renderButtons(section.actions)}
@@ -106,9 +115,10 @@ export const patterns = {
     const cards = (section.items ?? [])
       .map(
         (item) => `<article class="surface-card feature-card">
-          <p class="feature-index">${escapeHtml(item.kicker)}</p>
+          ${item.kicker ? `<p class="feature-index">${escapeHtml(item.kicker)}</p>` : ""}
           <h3>${escapeHtml(item.title)}</h3>
           <p>${escapeHtml(item.copy)}</p>
+          ${item.href ? `<a class="preview-link" href="${escapeHtml(item.href)}">${escapeHtml(item.linkLabel ?? "Learn more")}</a>` : ""}
         </article>`
       )
       .join("");
@@ -117,8 +127,11 @@ export const patterns = {
       <div class="container">
         <p class="eyebrow">${escapeHtml(section.eyebrow)}</p>
         <div class="section-heading">
-          <h2 class="section-title">${escapeHtml(section.title)}</h2>
-          <p class="section-copy">${escapeHtml(section.copy)}</p>
+          <div>
+            <h2 class="section-title">${escapeHtml(section.title)}</h2>
+            <p class="section-copy">${escapeHtml(section.copy)}</p>
+          </div>
+          ${renderButtons(section.actions)}
         </div>
         <div class="feature-grid">${cards}</div>
       </div>
@@ -197,6 +210,14 @@ export const patterns = {
       </div>
     </section>`;
   },
+  gallery(section) {
+    const layout = section.layout === "thumbnails" ? "thumbnailGallery" : "carouselGallery";
+    const items = section.items ?? section.slides ?? [];
+    const normalized =
+      layout === "carouselGallery" ? { ...section, slides: items } : { ...section, items };
+
+    return patterns[layout](normalized);
+  },
   carouselGallery(section) {
     const slides = section.slides ?? [];
     const showIndicators = section.indicators !== false;
@@ -221,6 +242,7 @@ export const patterns = {
             <h2 class="section-title">${escapeHtml(section.title)}</h2>
           </div>
           <p class="section-copy">${escapeHtml(section.copy ?? "")}</p>
+          ${renderButtons(section.actions)}
         </div>
         <div id="${escapeHtml(carouselId)}" class="carousel-shell surface-card carousel slide${transition === "fade" ? " carousel-fade" : ""}"${shellStyle} data-bs-touch="true" data-bs-ride="${section.autoplay ? "carousel" : "false"}" data-bs-interval="${escapeHtml(section.interval ?? 5000)}">
           <div class="carousel-viewport">
@@ -251,6 +273,51 @@ export const patterns = {
               : ""
           }
         </div>
+      </div>
+    </section>`;
+  },
+  thumbnailGallery(section) {
+    const items = section.items ?? [];
+    const fallbackId = String(section.title ?? "gallery")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
+    const galleryId = `${section.id ?? fallbackId}-lightbox`;
+
+    const thumbnails = items
+      .map((item, index) => {
+        const src = escapeHtml(resolveAssetPath(item.media?.src ?? ""));
+        const alt = escapeHtml(item.media?.alt ?? item.title ?? "");
+        const caption = escapeHtml([item.title, item.copy].filter(Boolean).join(" — "));
+
+        return `<button class="thumbnail-item" type="button" data-gallery-index="${index}" data-caption="${caption}">
+          <img src="${src}" alt="${alt}" loading="lazy" />
+        </button>`;
+      })
+      .join("");
+
+    return `<section class="section"${sectionAttrs(section)}>
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">${escapeHtml(section.eyebrow ?? "")}</p>
+            <h2 class="section-title">${escapeHtml(section.title)}</h2>
+          </div>
+          <p class="section-copy">${escapeHtml(section.copy ?? "")}</p>
+          ${renderButtons(section.actions)}
+        </div>
+        <div class="thumbnail-grid" data-thumbnail-gallery>${thumbnails}</div>
+        <dialog id="${escapeHtml(galleryId)}" class="gallery-modal" data-gallery-modal aria-label="Image viewer">
+          <div class="gallery-modal-inner">
+            <button class="gallery-modal-close" type="button" data-gallery-close aria-label="Close">&times;</button>
+            <button class="gallery-modal-nav gallery-modal-prev" type="button" data-gallery-prev aria-label="Previous image">&larr;</button>
+            <figure class="gallery-modal-figure">
+              <img data-gallery-modal-img src="" alt="" />
+              <figcaption data-gallery-modal-caption></figcaption>
+            </figure>
+            <button class="gallery-modal-nav gallery-modal-next" type="button" data-gallery-next aria-label="Next image">&rarr;</button>
+          </div>
+        </dialog>
       </div>
     </section>`;
   },
@@ -364,8 +431,19 @@ export function renderUtilities(utilities) {
 }
 
 export function collectPatternScripts(sections) {
-  void sections;
-  return "";
+  const scripts = [];
+
+  if (
+    sections.some(
+      (section) =>
+        section.pattern === "thumbnailGallery" ||
+        (section.pattern === "gallery" && section.layout === "thumbnails")
+    )
+  ) {
+    scripts.push(thumbnailGalleryScript);
+  }
+
+  return scripts.join("\n\n").trim();
 }
 
 export const utilityRegistry = {
@@ -464,7 +542,7 @@ export const patternStyles = `
 
 .hero-panel-list,
 .bullet-list {
-  margin: 0;
+  margin: 1.25rem 0 0;
   padding-left: 1.2rem;
   color: var(--color-muted);
   line-height: 1.7;
@@ -472,6 +550,7 @@ export const patternStyles = `
 
 .section-heading {
   grid-template-columns: 1.4fr 1fr;
+  align-items: start;
   margin-bottom: 2rem;
 }
 
@@ -774,6 +853,133 @@ export const patternStyles = `
   background: var(--color-accent);
 }
 
+.thumbnail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  gap: 1.25rem;
+}
+
+.thumbnail-item {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: var(--color-strong-surface);
+  cursor: pointer;
+}
+
+.thumbnail-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 220ms ease;
+}
+
+.thumbnail-item:hover img,
+.thumbnail-item:focus-visible img {
+  transform: scale(1.05);
+}
+
+.gallery-modal {
+  position: fixed;
+  inset: 0;
+  max-width: 100vw;
+  max-height: 100vh;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #f5f5f7;
+}
+
+.gallery-modal::backdrop {
+  background: rgba(8, 8, 10, 0.9);
+}
+
+.gallery-modal-inner {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  padding: clamp(1.5rem, 5vw, 4rem);
+}
+
+.gallery-modal-figure {
+  margin: 0;
+  max-width: 100%;
+  text-align: center;
+}
+
+.gallery-modal-figure img {
+  display: block;
+  max-width: 100%;
+  max-height: 78vh;
+  margin: 0 auto;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+}
+
+.gallery-modal-figure figcaption {
+  margin-top: 1rem;
+  color: rgba(245, 245, 247, 0.8);
+  font-size: 0.95rem;
+}
+
+.gallery-modal-close,
+.gallery-modal-nav {
+  position: absolute;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(245, 245, 247, 0.12);
+  color: #f5f5f7;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background 160ms ease;
+}
+
+.gallery-modal-close:hover,
+.gallery-modal-nav:hover {
+  background: rgba(245, 245, 247, 0.24);
+}
+
+.gallery-modal-close {
+  top: clamp(1rem, 3vw, 2rem);
+  right: clamp(1rem, 3vw, 2rem);
+  width: 2.75rem;
+  height: 2.75rem;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.gallery-modal-nav {
+  top: 50%;
+  width: 3rem;
+  height: 3rem;
+  font-size: 1.25rem;
+  transform: translateY(-50%);
+}
+
+.gallery-modal-prev {
+  left: clamp(0.5rem, 2vw, 1.5rem);
+}
+
+.gallery-modal-next {
+  right: clamp(0.5rem, 2vw, 1.5rem);
+}
+
+@media (max-width: 640px) {
+  .gallery-modal-nav {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
+
 .promo-card {
   overflow: hidden;
 }
@@ -880,6 +1086,19 @@ export const patternStyles = `
 
 .gradient-masthead .eyebrow {
   color: rgba(255, 255, 255, 0.85);
+}
+
+.masthead-eyebrow-link {
+  display: inline-block;
+  text-decoration: none;
+}
+
+.masthead-eyebrow-link::before {
+  content: "← ";
+}
+
+.masthead-eyebrow-link:hover {
+  text-decoration: underline;
 }
 
 .gradient-masthead .display-title {
@@ -1118,5 +1337,68 @@ const carouselScript = `(function () {
 
     render(0);
     startAutoplay();
+  });
+})();`;
+
+const thumbnailGalleryScript = `(function () {
+  const grids = document.querySelectorAll('[data-thumbnail-gallery]');
+  if (!grids.length) return;
+
+  grids.forEach(function (grid) {
+    const modal = grid.parentElement.querySelector('[data-gallery-modal]');
+    if (!modal || typeof modal.showModal !== 'function') return;
+
+    const items = Array.from(grid.querySelectorAll('[data-gallery-index]'));
+    const imgEl = modal.querySelector('[data-gallery-modal-img]');
+    const captionEl = modal.querySelector('[data-gallery-modal-caption]');
+    let activeIndex = 0;
+
+    function show(index) {
+      activeIndex = (index + items.length) % items.length;
+      const item = items[activeIndex];
+      const img = item.querySelector('img');
+      imgEl.src = img.getAttribute('src');
+      imgEl.alt = img.getAttribute('alt') || '';
+      captionEl.textContent = item.dataset.caption || '';
+    }
+
+    items.forEach(function (item, index) {
+      item.addEventListener('click', function () {
+        show(index);
+        modal.showModal();
+      });
+    });
+
+    const closeButton = modal.querySelector('[data-gallery-close]');
+    if (closeButton) {
+      closeButton.addEventListener('click', function () {
+        modal.close();
+      });
+    }
+
+    const prevButton = modal.querySelector('[data-gallery-prev]');
+    if (prevButton) {
+      prevButton.addEventListener('click', function () {
+        show(activeIndex - 1);
+      });
+    }
+
+    const nextButton = modal.querySelector('[data-gallery-next]');
+    if (nextButton) {
+      nextButton.addEventListener('click', function () {
+        show(activeIndex + 1);
+      });
+    }
+
+    modal.addEventListener('click', function (event) {
+      if (event.target === modal) {
+        modal.close();
+      }
+    });
+
+    modal.addEventListener('keydown', function (event) {
+      if (event.key === 'ArrowRight') show(activeIndex + 1);
+      if (event.key === 'ArrowLeft') show(activeIndex - 1);
+    });
   });
 })();`;

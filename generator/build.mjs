@@ -31,20 +31,30 @@ async function main() {
   await mkdir(siteOutputDir, { recursive: true });
 
   const css = [baseStyles, themeCss, patternStyles, utilityStyles].join("\n\n");
-  const html = renderDocument(site);
-  const script = renderScripts(site);
-
   await writeFile(path.join(siteOutputDir, "styles.css"), css);
-  await writeFile(path.join(siteOutputDir, "index.html"), html);
+
+  const script = renderScripts(site);
   if (script) {
     await writeFile(path.join(siteOutputDir, "scripts.js"), script);
   }
+
+  await writeFile(path.join(siteOutputDir, "index.html"), renderDocument(site, null));
+
+  const pages = site.pages ?? [];
+  for (const page of pages) {
+    const pageDir = path.join(siteOutputDir, page.slug);
+    await mkdir(pageDir, { recursive: true });
+    await writeFile(path.join(pageDir, "index.html"), renderDocument(site, page));
+  }
+
   await writeFile(
     path.join(siteOutputDir, "site.json"),
     `${JSON.stringify(site, null, 2)}\n`
   );
 
-  console.log(`Built ${site.slug} -> ${path.relative(rootDir, siteOutputDir)}`);
+  console.log(
+    `Built ${site.slug} -> ${path.relative(rootDir, siteOutputDir)} (${1 + pages.length} page${pages.length ? "s" : ""})`
+  );
 }
 
 function validateSite(site) {
@@ -56,7 +66,19 @@ function validateSite(site) {
     throw new Error("Site spec must include at least one section.");
   }
 
-  for (const section of site.sections) {
+  const allSections = [...site.sections];
+
+  for (const page of site.pages ?? []) {
+    if (!page.slug || !page.title) {
+      throw new Error("Each page must include a slug and title.");
+    }
+    if (!Array.isArray(page.sections) || page.sections.length === 0) {
+      throw new Error(`Page "${page.slug}" must include at least one section.`);
+    }
+    allSections.push(...page.sections);
+  }
+
+  for (const section of allSections) {
     if (!patterns[section.pattern]) {
       throw new Error(`Unknown pattern: ${section.pattern}`);
     }
@@ -65,12 +87,35 @@ function validateSite(site) {
   validateUtilities(site.utilities ?? {});
 }
 
-function renderDocument(site) {
-  const navLinks = (site.navigation?.links ?? [])
-    .map((link) => `<a href="${escapeHtml(link.href)}">${escapeHtml(link.label)}</a>`)
-    .join("");
+function renderNav(site, page) {
+  const isHome = !page;
 
-  const sections = site.sections
+  return (site.navigation?.links ?? [])
+    .map((link) => {
+      const href = isHome && link.homeHref ? link.homeHref : link.href;
+      const label = escapeHtml(link.label);
+
+      if (!link.children?.length) {
+        return `<a href="${escapeHtml(href)}">${label}</a>`;
+      }
+
+      const children = link.children
+        .map(
+          (child) =>
+            `<li><a href="${escapeHtml(child.href)}">${escapeHtml(child.label)}</a></li>`
+        )
+        .join("");
+
+      return `<div class="nav-item has-dropdown">
+        <a href="${escapeHtml(href)}">${label}</a>
+        <ul class="nav-dropdown">${children}</ul>
+      </div>`;
+    })
+    .join("");
+}
+
+function renderDocument(site, page) {
+  const sections = (page?.sections ?? site.sections)
     .map((section) => patterns[section.pattern](section))
     .join("\n");
 
@@ -83,16 +128,20 @@ function renderDocument(site) {
 
   const utilities = renderUtilities(site.utilities ?? {});
   const hasScripts = Boolean(renderScripts(site));
-  const needsBootstrapCarousel = usesBootstrapCarousel(site);
+  const needsBootstrapCarousel = (page?.sections ?? site.sections).some(
+    (section) =>
+      section.pattern === "carouselGallery" ||
+      (section.pattern === "gallery" && section.layout !== "thumbnails")
+  );
 
   return `<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>${escapeHtml(site.title)}</title>
-    <meta name="description" content="${escapeHtml(site.description ?? "")}" />
-    <link rel="stylesheet" href="./styles.css" />
+    <title>${escapeHtml(page?.title ?? site.title)}</title>
+    <meta name="description" content="${escapeHtml(page?.description ?? site.description ?? "")}" />
+    <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
     <div class="site-shell">
@@ -100,7 +149,7 @@ function renderDocument(site) {
         <div class="container header-inner">
           <a class="site-brand" href="/">${escapeHtml(site.brand ?? site.title)}</a>
           <nav class="site-nav" aria-label="Primary">
-            ${navLinks}
+            ${renderNav(site, page)}
           </nav>
         </div>
       </header>
@@ -121,7 +170,7 @@ function renderDocument(site) {
       ${utilities}
     </div>
     ${needsBootstrapCarousel ? '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>' : ""}
-    ${hasScripts ? '<script src="./scripts.js"></script>' : ""}
+    ${hasScripts ? '<script src="/scripts.js"></script>' : ""}
   </body>
 </html>`;
 }
@@ -129,7 +178,12 @@ function renderDocument(site) {
 function renderScripts(site) {
   const scripts = [];
 
-  const patternScript = collectPatternScripts(site.sections ?? []);
+  const allSections = [
+    ...(site.sections ?? []),
+    ...(site.pages ?? []).flatMap((page) => page.sections ?? [])
+  ];
+
+  const patternScript = collectPatternScripts(allSections);
   if (patternScript) {
     scripts.push(patternScript);
   }
@@ -142,12 +196,6 @@ function renderScripts(site) {
   }
 
   return scripts.join("\n\n").trim();
-}
-
-function usesBootstrapCarousel(site) {
-  return (site.sections ?? []).some(
-    (section) => section.pattern === "carouselGallery"
-  );
 }
 
 function escapeHtml(value) {
@@ -248,6 +296,52 @@ a {
   color: var(--color-text);
 }
 
+.nav-item.has-dropdown {
+  position: relative;
+}
+
+.nav-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 20;
+  margin: 0.5rem 0 0;
+  padding: 0.5rem;
+  min-width: 14rem;
+  list-style: none;
+  background: var(--color-surface);
+  border: var(--border-subtle);
+  box-shadow: var(--shadow-soft);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(0.25rem);
+  transition: opacity 160ms ease, transform 160ms ease, visibility 160ms ease;
+}
+
+.nav-item.has-dropdown:hover .nav-dropdown,
+.nav-item.has-dropdown:focus-within .nav-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.nav-dropdown li + li {
+  margin-top: 0.15rem;
+}
+
+.nav-dropdown a {
+  display: block;
+  padding: 0.5rem 0.6rem;
+  white-space: nowrap;
+  text-decoration: none;
+  color: var(--color-muted);
+}
+
+.nav-dropdown a:hover {
+  color: var(--color-text);
+  background: var(--color-strong-surface);
+}
+
 .site-footer {
   padding: 1rem 0 3rem;
 }
@@ -294,6 +388,7 @@ a {
 }
 
 .button-row {
+  margin-top: 1.75rem;
   display: flex;
   flex-wrap: wrap;
   gap: 0.9rem;

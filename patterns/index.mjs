@@ -103,8 +103,10 @@ export const patterns = {
         </aside>`
       : "";
 
+    const align = section.align === "right" ? " hero-align-right" : "";
+
     return `<section class="section hero-section"${sectionAttrs(section)}>
-      <div class="container hero-grid${section.panel ? "" : " hero-grid-solo"}">
+      <div class="container hero-grid${section.panel ? "" : " hero-grid-solo"}${align}">
         <div class="hero-copy">
           <p class="eyebrow">${escapeHtml(section.eyebrow)}</p>
           <h1 class="display-title">${escapeHtml(section.title)}${
@@ -810,6 +812,16 @@ export const patternStyles = `
 
 .hero-grid-solo .hero-copy {
   grid-column: 1 / -1;
+}
+
+.hero-align-right .hero-copy {
+  margin-left: auto;
+  max-width: 40rem;
+  text-align: right;
+}
+
+.hero-align-right .button-row {
+  justify-content: flex-end;
 }
 
 .text-accent {

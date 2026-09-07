@@ -27,6 +27,7 @@
     {
       "id": "top",
       "pattern": "hero",
+      "align": "right",
       "eyebrow": "AI Systems & Automation",
       "title": "AH Media",
       "accent": ".ai",

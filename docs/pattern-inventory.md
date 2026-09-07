@@ -16,6 +16,9 @@ The goal is not to mirror those sites literally. The goal is to extract the reus
     headline, e.g. `title: "AH Media"`, `accent: ".ai"`
   - `panel` (the side `aside` card) is optional — omit it for a single-column hero
     (`.hero-grid-solo`) instead of a hero with an empty card
+  - `align: "right"` right-aligns the copy block (text + button row) and caps its width,
+    for a hero that hugs the right edge instead of the left — the rest of the site's
+    sections are unaffected
 - `featureGrid`
   - compact multi-column feature summary
 - `spotlight`

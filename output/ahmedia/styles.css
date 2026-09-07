@@ -299,6 +299,16 @@ body {
   grid-column: 1 / -1;
 }
 
+.hero-align-right .hero-copy {
+  margin-left: auto;
+  max-width: 40rem;
+  text-align: right;
+}
+
+.hero-align-right .button-row {
+  justify-content: flex-end;
+}
+
 .text-accent {
   color: var(--color-accent);
 }

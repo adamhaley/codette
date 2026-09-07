@@ -1334,7 +1334,6 @@ export const patternStyles = `
 .contact-form {
   display: grid;
   gap: 1.25rem;
-  max-width: 34rem;
   padding: 2rem;
 }
 
@@ -1360,6 +1359,11 @@ export const patternStyles = `
   color: var(--color-text);
   font: inherit;
   resize: vertical;
+}
+
+.contact-form-row input::placeholder,
+.contact-form-row textarea::placeholder {
+  color: color-mix(in srgb, var(--color-text) 55%, transparent);
 }
 
 .contact-form-row input:focus,

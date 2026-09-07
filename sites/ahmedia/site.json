@@ -6,9 +6,9 @@
   "theme": "ahmedia",
   "navigation": {
     "links": [
-      { "label": "Services", "href": "#services" },
-      { "label": "Approach", "href": "#approach" },
-      { "label": "Contact", "href": "#contact" }
+      { "label": "Services", "href": "/#services", "homeHref": "#services" },
+      { "label": "Approach", "href": "/#approach", "homeHref": "#approach" },
+      { "label": "Contact", "href": "/#contact", "homeHref": "#contact" }
     ]
   },
   "utilities": {
@@ -47,18 +47,27 @@
         {
           "kicker": "01",
           "title": "AI Consulting",
-          "copy": "Strategy, opportunity mapping, and a clear path to production — not just a slide deck. We help you decide what's worth building and what isn't."
+          "copy": "Strategy, opportunity mapping, and a clear path to production — not just a slide deck. We help you decide what's worth building and what isn't.",
+          "href": "/services",
+          "linkLabel": "Learn more"
         },
         {
           "kicker": "02",
           "title": "Custom Programming",
-          "copy": "Web apps, APIs, and automation tooling, including n8n-driven workflows that connect the systems you already run on."
+          "copy": "Web apps, APIs, and automation tooling, including n8n-driven workflows that connect the systems you already run on.",
+          "href": "/services",
+          "linkLabel": "Learn more"
         },
         {
           "kicker": "03",
           "title": "Website Design",
-          "copy": "Fast, content-driven sites paired with the same AI-assisted workflows we build for clients — built to launch quickly and evolve without a redesign."
+          "copy": "Fast, content-driven sites paired with the same AI-assisted workflows we build for clients — built to launch quickly and evolve without a redesign.",
+          "href": "/services",
+          "linkLabel": "Learn more"
         }
+      ],
+      "actions": [
+        { "label": "View All Services", "href": "/services", "variant": "secondary" }
       ]
     },
     {
@@ -72,7 +81,10 @@
         "Custom chat and RAG assistants trained on your own content",
         "Static-first frontends that stay fast and cheap to run"
       ],
-      "media": { "label": "Approach" }
+      "media": { "label": "Approach" },
+      "actions": [
+        { "label": "More on Our Approach", "href": "/approach", "variant": "secondary" }
+      ]
     },
     {
       "id": "contact",
@@ -82,6 +94,142 @@
       "copy": "Send a few details and we'll get back to you — or use the chat in the corner for something quicker.",
       "formAction": "#",
       "buttonLabel": "Send Message"
+    }
+  ],
+  "pages": [
+    {
+      "slug": "services",
+      "title": "Services - AH Media.ai",
+      "description": "AI consulting, custom programming, and website design from AH Media.",
+      "sections": [
+        {
+          "pattern": "hero",
+          "align": "right",
+          "eyebrow": "Services",
+          "title": "What We Do",
+          "copy": "Three ways we help businesses run on AI — pick a starting point, or talk through where you actually are.",
+          "actions": [
+            { "label": "Start a Project", "href": "/#contact", "variant": "primary" }
+          ]
+        },
+        {
+          "pattern": "featureGrid",
+          "eyebrow": "Capabilities",
+          "title": "AI Consulting, Custom Programming, Website Design",
+          "copy": "Each engagement starts with a real bottleneck, not a technology mandate.",
+          "items": [
+            {
+              "kicker": "01",
+              "title": "AI Consulting",
+              "copy": "Strategy, opportunity mapping, and a clear path to production — not just a slide deck. We help you decide what's worth building and what isn't."
+            },
+            {
+              "kicker": "02",
+              "title": "Custom Programming",
+              "copy": "Web apps, APIs, and automation tooling, including n8n-driven workflows that connect the systems you already run on."
+            },
+            {
+              "kicker": "03",
+              "title": "Website Design",
+              "copy": "Fast, content-driven sites paired with the same AI-assisted workflows we build for clients — built to launch quickly and evolve without a redesign."
+            }
+          ]
+        },
+        {
+          "pattern": "cta",
+          "eyebrow": "Ready When You Are",
+          "title": "Let's talk about your project",
+          "copy": "Tell us what you're trying to build — we'll tell you honestly whether AI is the right tool for it.",
+          "actions": [
+            { "label": "Start a Project", "href": "/#contact", "variant": "primary" }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "approach",
+      "title": "Approach - AH Media.ai",
+      "description": "How AH Media combines static-first frontends with AI automation.",
+      "sections": [
+        {
+          "pattern": "hero",
+          "align": "right",
+          "eyebrow": "Approach",
+          "title": "Static where it's simple, AI where it earns its keep",
+          "copy": "Most of what a business needs from a website is speed and clarity. The AI does the actual work behind it."
+        },
+        {
+          "pattern": "splitContent",
+          "eyebrow": "How We Work",
+          "title": "The stack behind it",
+          "copy": "The AI does the actual work — qualifying leads, answering questions, and automating the busywork between the tools you already use — while the frontend stays fast, simple, and cheap to run.",
+          "points": [
+            "n8n as the automation and integration layer between your existing tools",
+            "Custom chat and RAG assistants trained on your own content",
+            "Static-first frontends that stay fast and cheap to run"
+          ]
+        },
+        {
+          "pattern": "cta",
+          "eyebrow": "Ready When You Are",
+          "title": "Let's talk about your project",
+          "copy": "Tell us what you're trying to build — we'll tell you honestly whether AI is the right tool for it.",
+          "actions": [
+            { "label": "Start a Project", "href": "/#contact", "variant": "primary" }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "about",
+      "title": "About - AH Media.ai",
+      "description": "Who's behind AH Media.",
+      "sections": [
+        {
+          "pattern": "hero",
+          "align": "right",
+          "eyebrow": "About",
+          "title": "About AH Media",
+          "copy": "AH Media is built and run by Adam Haley, who designs and ships the AI systems behind this site — the chat widget, the automation, and the static-site toolkit it's built on."
+        },
+        {
+          "pattern": "splitContent",
+          "eyebrow": "Why It's Different",
+          "title": "Built by the person doing the work",
+          "copy": "No account managers, no hand-off between the person who scopes the project and the person who builds it.",
+          "points": [
+            "Direct access to the person actually building your system",
+            "AI and automation work, not just strategy slides",
+            "Built using the same static-first + AI toolkit used on this site"
+          ]
+        },
+        {
+          "pattern": "cta",
+          "eyebrow": "Ready When You Are",
+          "title": "Let's talk about your project",
+          "copy": "Tell us what you're trying to build — we'll tell you honestly whether AI is the right tool for it.",
+          "actions": [
+            { "label": "Start a Project", "href": "/#contact", "variant": "primary" }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "case-studies",
+      "title": "Case Studies - AH Media.ai",
+      "description": "Case studies from AH Media's AI and automation work.",
+      "sections": [
+        {
+          "pattern": "hero",
+          "align": "right",
+          "eyebrow": "Case Studies",
+          "title": "Real work, coming soon",
+          "copy": "We're building out detailed case studies from current engagements. Check back soon — or get in touch to talk through a project directly.",
+          "actions": [
+            { "label": "Start a Project", "href": "/#contact", "variant": "primary" }
+          ]
+        }
+      ]
     }
   ],
   "footer": {

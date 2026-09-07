@@ -1691,6 +1691,17 @@ export const utilityStyles = `
   fill: currentColor;
 }
 
+/*
+ * The "comments" glyph's viewBox (640x512, 1.25:1) is wider than the
+ * square box above, so at the shared size it gets letterboxed and
+ * reads visually smaller than the other (square-viewBox) icons.
+ * Size it up specifically so it fills the reopen button the same way.
+ */
+.chat-reopen-button svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
 .chat-send-button:hover,
 .chat-reopen-button:hover {
   box-shadow: 0 0 15px var(--color-accent);

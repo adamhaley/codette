@@ -25,6 +25,11 @@
       "enabled": true,
       "endpoint": "/api/chat.php",
       "ariaLabel": "Open chat"
+    },
+    "backToTop": {
+      "enabled": true,
+      "position": "left",
+      "threshold": 200
     }
   },
   "sections": [
@@ -89,26 +94,12 @@
     },
     {
       "id": "contact",
-      "pattern": "contactCards",
+      "pattern": "contactForm",
       "eyebrow": "Contact",
       "title": "Let's talk about what you're trying to build",
-      "copy": "Reach out directly, or use the chat in the corner — it's the same kind of assistant we build for clients.",
-      "items": [
-        {
-          "label": "Email",
-          "value": "info@ahmedia.ai",
-          "href": "mailto:info@ahmedia.ai"
-        },
-        {
-          "label": "Phone",
-          "value": "(323) 384-3493",
-          "href": "tel:+13233843493"
-        },
-        {
-          "label": "Studio",
-          "value": "10153 1/2 Riverside Dr. #516, Toluca Lake, CA 91602"
-        }
-      ]
+      "copy": "Send a few details and we'll get back to you — or use the chat in the corner for something quicker.",
+      "formAction": "#",
+      "buttonLabel": "Send Message"
     }
   ],
   "footer": {

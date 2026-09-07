@@ -12,6 +12,10 @@ The goal is not to mirror those sites literally. The goal is to extract the reus
 - `hero`
   - large introductory section
   - supports CTA cluster and optional side panel
+  - `title` supports an optional `accent` span (`.text-accent`, themeable) for a two-tone
+    headline, e.g. `title: "AH Media"`, `accent: ".ai"`
+  - `panel` (the side `aside` card) is optional — omit it for a single-column hero
+    (`.hero-grid-solo`) instead of a hero with an empty card
 - `featureGrid`
   - compact multi-column feature summary
 - `spotlight`
@@ -41,14 +45,15 @@ The goal is not to mirror those sites literally. The goal is to extract the reus
 - `signupBand`
   - newsletter or network signup section
 - `contactCards`
-  - compact contact information grid
+  - compact contact information grid (static label/value pairs)
+- `contactForm`
+  - name/email/message contact form, plain HTML `<form>` POST (no JS)
+  - `formAction` (default `#` — set to the real endpoint when one exists), `buttonLabel`,
+    and per-field placeholders are all optional
+  - prefer this over `contactCards` when you want to actually collect submissions rather
+    than just display contact details
 - `cta`
   - general-purpose conversion section
-- `hero`
-  - `title` supports an optional `accent` span (`.text-accent`, themeable) for a two-tone
-    headline, e.g. `title: "AH Media"`, `accent: ".ai"`
-  - `panel` (the side `aside` card) is optional — omit it for a single-column hero
-    (`.hero-grid-solo`) instead of a hero with an empty card
 
 ## Utility Patterns
 
@@ -56,6 +61,8 @@ The goal is not to mirror those sites literally. The goal is to extract the reus
   - floating scroll-triggered utility
   - shared concept across both reference sites
   - supports SVG icon variants like `arrow`, `triangle`, `chevron`, and `caret`
+  - `position: "left" | "right"` (default `"right"`) — use `"left"` when the right corner is
+    already occupied (e.g. by `chatWidget`)
 - `chatWidget`
   - floating reopen button + chat panel (messages list, input row, streaming NDJSON support)
   - posts to `config.endpoint` (default `/api/chat.php`)

@@ -78,18 +78,23 @@
             <p class="eyebrow">Contact</p>
             <h2 class="section-title">Let&#39;s talk about what you&#39;re trying to build</h2>
           </div>
-          <p class="section-copy">Reach out directly, or use the chat in the corner — it&#39;s the same kind of assistant we build for clients.</p>
+          <p class="section-copy">Send a few details and we&#39;ll get back to you — or use the chat in the corner for something quicker.</p>
         </div>
-        <div class="contact-grid"><article class="surface-card contact-card">
-          <p class="contact-kicker">Email</p>
-          <p class="contact-value"><a href="mailto:info@ahmedia.ai">info@ahmedia.ai</a></p>
-        </article><article class="surface-card contact-card">
-          <p class="contact-kicker">Phone</p>
-          <p class="contact-value"><a href="tel:+13233843493">(323) 384-3493</a></p>
-        </article><article class="surface-card contact-card">
-          <p class="contact-kicker">Studio</p>
-          <p class="contact-value">10153 1/2 Riverside Dr. #516, Toluca Lake, CA 91602</p>
-        </article></div>
+        <form class="contact-form surface-card" action="#" method="post">
+          <div class="contact-form-row">
+            <label for="contact-form-name">Name</label>
+            <input id="contact-form-name" type="text" name="name" placeholder="Your name" required />
+          </div>
+          <div class="contact-form-row">
+            <label for="contact-form-email">Email</label>
+            <input id="contact-form-email" type="email" name="email" placeholder="you@example.com" required />
+          </div>
+          <div class="contact-form-row">
+            <label for="contact-form-message">Message</label>
+            <textarea id="contact-form-message" name="message" rows="5" placeholder="What are you trying to build?" required></textarea>
+          </div>
+          <button class="button button-primary" type="submit">Send Message</button>
+        </form>
       </div>
     </section>
       </main>
@@ -114,6 +119,11 @@
         </div>
       </div>
       <button class="chat-reopen-button" type="button" aria-label="Open chat"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 3h16v10H7l-4 4V13H2V3Z"/></svg></button>
+    </div>
+<div class="back-to-top-link" data-threshold="200" data-position="left">
+      <a href="#top" aria-label="Back to top">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 0L9.4.6.8 9.1 2 10.3l7.1-7.1V20h1.7V3.3l7.1 7.1 1.2-1.2L10.6.6 10 0Z"/></svg>
+      </a>
     </div>
     </div>
     

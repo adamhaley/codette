@@ -405,6 +405,36 @@ export const patterns = {
         <div class="contact-grid">${cards}</div>
       </div>
     </section>`;
+  },
+  contactForm(section) {
+    const formId = section.formId ?? "contact-form";
+
+    return `<section class="section"${sectionAttrs(section)}>
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">${escapeHtml(section.eyebrow)}</p>
+            <h2 class="section-title">${escapeHtml(section.title)}</h2>
+          </div>
+          <p class="section-copy">${escapeHtml(section.copy)}</p>
+        </div>
+        <form class="contact-form surface-card" action="${escapeHtml(section.formAction ?? "#")}" method="post">
+          <div class="contact-form-row">
+            <label for="${escapeHtml(formId)}-name">Name</label>
+            <input id="${escapeHtml(formId)}-name" type="text" name="name" placeholder="${escapeHtml(section.namePlaceholder ?? "Your name")}" required />
+          </div>
+          <div class="contact-form-row">
+            <label for="${escapeHtml(formId)}-email">Email</label>
+            <input id="${escapeHtml(formId)}-email" type="email" name="email" placeholder="${escapeHtml(section.emailPlaceholder ?? "you@example.com")}" required />
+          </div>
+          <div class="contact-form-row">
+            <label for="${escapeHtml(formId)}-message">Message</label>
+            <textarea id="${escapeHtml(formId)}-message" name="message" rows="5" placeholder="${escapeHtml(section.messagePlaceholder ?? "What are you trying to build?")}" required></textarea>
+          </div>
+          <button class="button button-primary" type="submit">${escapeHtml(section.buttonLabel ?? "Send Message")}</button>
+        </form>
+      </div>
+    </section>`;
   }
 };
 
@@ -464,8 +494,9 @@ export const utilityRegistry = {
   backToTop(config = {}) {
     const variant = config.iconVariant ?? "arrow";
     const icon = backToTopIcons[variant] ?? backToTopIcons.arrow;
+    const position = config.position === "left" ? "left" : "right";
 
-    return `<div class="back-to-top-link" data-threshold="${escapeHtml(config.threshold ?? 100)}">
+    return `<div class="back-to-top-link" data-threshold="${escapeHtml(config.threshold ?? 100)}" data-position="${position}">
       <a href="#top" aria-label="${escapeHtml(config.ariaLabel ?? "Back to top")}">
         ${icon}
       </a>
@@ -1300,6 +1331,47 @@ export const patternStyles = `
   padding: 1.5rem;
 }
 
+.contact-form {
+  display: grid;
+  gap: 1.25rem;
+  max-width: 34rem;
+  padding: 2rem;
+}
+
+.contact-form-row {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.contact-form-row label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.contact-form-row input,
+.contact-form-row textarea {
+  padding: 0.75rem 1rem;
+  border: var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  resize: vertical;
+}
+
+.contact-form-row input:focus,
+.contact-form-row textarea:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.contact-form button {
+  justify-self: start;
+}
+
 .contact-kicker {
   margin: 0 0 0.8rem;
   color: var(--color-accent);
@@ -1489,6 +1561,11 @@ export const utilityStyles = `
   opacity: 0;
   transform: translateY(0.35rem);
   transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.back-to-top-link[data-position="left"] {
+  left: 1rem;
+  right: auto;
 }
 
 .back-to-top-link.in {

@@ -21,7 +21,8 @@
     "backToTop": {
       "enabled": true,
       "position": "left",
-      "threshold": 200
+      "threshold": 200,
+      "iconVariant": "triangle"
     }
   },
   "sections": [

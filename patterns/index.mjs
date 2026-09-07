@@ -1609,18 +1609,15 @@ export const utilityStyles = `
   place-items: center;
   width: 100%;
   height: 100%;
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--color-text) 86%, transparent);
-  box-shadow: var(--shadow-soft);
 }
 
 .back-to-top-link svg {
-  width: 1rem;
-  height: 1rem;
+  width: 85%;
+  height: 85%;
 }
 
 .back-to-top-link path {
-  fill: var(--color-surface);
+  fill: var(--color-text);
   transition: fill 180ms ease;
 }
 

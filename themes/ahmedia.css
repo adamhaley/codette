@@ -25,7 +25,8 @@ body {
 .site-brand,
 .footer-brand {
   color: #fff;
-  text-shadow: 0 0 10px var(--glow-color), 0 0 20px var(--glow-color), 0 0 40px var(--glow-color);
+  text-shadow: 0 0 4px color-mix(in srgb, var(--glow-color) 55%, transparent),
+    0 0 10px color-mix(in srgb, var(--glow-color) 25%, transparent);
 }
 
 .text-accent {

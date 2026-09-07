@@ -17,6 +17,11 @@
         "homeHref": "#approach"
       },
       {
+        "label": "Case Studies",
+        "href": "/case-studies",
+        "homeHref": "#case-studies"
+      },
+      {
         "label": "Contact",
         "href": "/#contact",
         "homeHref": "#contact"
@@ -112,6 +117,20 @@
         {
           "label": "More on Our Approach",
           "href": "/approach",
+          "variant": "secondary"
+        }
+      ]
+    },
+    {
+      "id": "case-studies",
+      "pattern": "cta",
+      "eyebrow": "Case Studies",
+      "title": "Real work, coming soon",
+      "copy": "We're building out detailed case studies from current engagements. Take a look, or check back soon.",
+      "actions": [
+        {
+          "label": "View Case Studies",
+          "href": "/case-studies",
           "variant": "secondary"
         }
       ]

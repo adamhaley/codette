@@ -1,11 +1,24 @@
 {
   "slug": "ahmedia",
   "title": "AH Media.ai",
-  "description": "AH Media.ai",
+  "description": "AI systems and automation for businesses that want to ship, not just plan.",
   "brand": "AH Media",
   "theme": "ahmedia",
   "navigation": {
-    "links": []
+    "links": [
+      {
+        "label": "Services",
+        "href": "#services"
+      },
+      {
+        "label": "Approach",
+        "href": "#approach"
+      },
+      {
+        "label": "Contact",
+        "href": "#contact"
+      }
+    ]
   },
   "utilities": {
     "chatWidget": {
@@ -18,12 +31,93 @@
     {
       "id": "top",
       "pattern": "hero",
+      "eyebrow": "AI Systems & Automation",
       "title": "AH Media",
-      "accent": ".ai"
+      "accent": ".ai",
+      "copy": "We design, build, and ship the AI systems businesses actually run on — from custom chat and RAG assistants to end-to-end automation with n8n.",
+      "actions": [
+        {
+          "label": "Start a Project",
+          "href": "#contact",
+          "variant": "primary"
+        },
+        {
+          "label": "What We Do",
+          "href": "#services",
+          "variant": "secondary"
+        }
+      ]
+    },
+    {
+      "id": "services",
+      "pattern": "featureGrid",
+      "eyebrow": "What We Do",
+      "title": "Three ways we help businesses run on AI",
+      "copy": "Each engagement starts with a real bottleneck, not a technology mandate.",
+      "items": [
+        {
+          "kicker": "01",
+          "title": "AI Consulting",
+          "copy": "Strategy, opportunity mapping, and a clear path to production — not just a slide deck. We help you decide what's worth building and what isn't."
+        },
+        {
+          "kicker": "02",
+          "title": "Custom Programming",
+          "copy": "Web apps, APIs, and automation tooling, including n8n-driven workflows that connect the systems you already run on."
+        },
+        {
+          "kicker": "03",
+          "title": "Website Design",
+          "copy": "Fast, content-driven sites paired with the same AI-assisted workflows we build for clients — built to launch quickly and evolve without a redesign."
+        }
+      ]
+    },
+    {
+      "id": "approach",
+      "pattern": "spotlight",
+      "eyebrow": "Approach",
+      "title": "Static where it's simple, AI where it earns its keep",
+      "copy": "Most of what a business needs from a website is speed and clarity. The AI does the actual work behind it — qualifying leads, answering questions, and automating the busywork between the tools you already use.",
+      "points": [
+        "n8n as the automation and integration layer between your existing tools",
+        "Custom chat and RAG assistants trained on your own content",
+        "Static-first frontends that stay fast and cheap to run"
+      ],
+      "media": {
+        "label": "Approach"
+      }
+    },
+    {
+      "id": "contact",
+      "pattern": "contactCards",
+      "eyebrow": "Contact",
+      "title": "Let's talk about what you're trying to build",
+      "copy": "Reach out directly, or use the chat in the corner — it's the same kind of assistant we build for clients.",
+      "items": [
+        {
+          "label": "Email",
+          "value": "info@ahmedia.ai",
+          "href": "mailto:info@ahmedia.ai"
+        },
+        {
+          "label": "Phone",
+          "value": "(323) 384-3493",
+          "href": "tel:+13233843493"
+        },
+        {
+          "label": "Studio",
+          "value": "10153 1/2 Riverside Dr. #516, Toluca Lake, CA 91602"
+        }
+      ]
     }
   ],
   "footer": {
-    "blurb": "",
-    "links": []
+    "blurb": "AI systems and automation for teams that want to ship, not just plan.",
+    "links": [
+      {
+        "label": "Email",
+        "href": "mailto:info@ahmedia.ai"
+      }
+    ]
   }
 }

@@ -81,3 +81,18 @@ The goal is not to mirror those sites literally. The goal is to extract the reus
   - for magazine covers, products, or archive items
 - `expandableBand`
   - for hidden or secondary content revealed inline
+- Scroll-driven header behavior (research, not yet built)
+  - inspired by `amplifiedexpansion.com`'s sticky header, which fades its background from
+    transparent to opaque as you scroll — worth generalizing into a small set of
+    lightweight, framework-free scroll behaviors for `.site-header`, e.g.:
+    - background opacity/blur fade in as you scroll past a threshold (the
+      amplifiedexpansion.com effect specifically)
+    - hide-on-scroll-down / reveal-on-scroll-up
+    - height/scale shrink on scroll (e.g. logo or padding shrinks past a threshold)
+  - also worth a look: a generic "stick for the duration of its own scroll, then rejoin
+    normal flow" behavior (not just a header) — an element pins for as long as its parent
+    section is in view, then unpins and scrolls away with the page instead of staying
+    fixed forever. Useful beyond headers (sidebars, sticky nav within a section, etc.)
+  - goal is a small `scrollHeader`-style utility (same shape as `backToTop`) driven by
+    `IntersectionObserver`/scroll listeners only — no scroll library, matching Codette's
+    framework-free stance

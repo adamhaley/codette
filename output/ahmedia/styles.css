@@ -280,6 +280,16 @@ body {
   align-items: start;
 }
 
+.hero-section {
+  /*
+   * Adjacent .section elements each carry a full --section-space of
+   * padding, so two in a row (hero + whatever follows) stack into an
+   * oversized gap. Trim the hero's own bottom padding so that math
+   * doesn't double up.
+   */
+  padding-bottom: calc(var(--section-space) * 0.4);
+}
+
 .hero-copy {
   grid-column: span 7;
 }

@@ -85,8 +85,6 @@
   ],
   "footer": {
     "blurb": "AI systems and automation for teams that want to ship, not just plan.",
-    "links": [
-      { "label": "Email", "href": "mailto:info@ahmedia.ai" }
-    ]
+    "links": []
   }
 }
